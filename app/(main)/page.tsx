@@ -71,11 +71,14 @@ function PromptTextarea({
       placeholder="مثلاً: یه تجربه باحال برای معرفی محصول جدیدمون می‌خوام..."
       required
       name="prompt"
-      rows={1}
+      rows={2}
       disabled={pending}
       autoCorrect="off"
       spellCheck="false"
-      className="min-h-[72px] w-full resize-none rounded-md border-0 bg-transparent p-3.5 text-[0.9375rem] leading-relaxed placeholder:text-muted-foreground/60 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+      className="block h-fit w-full resize-none rounded-md border-0 
+      bg-transparent px-3.5 py-3 m-0 text-[0.9375rem] min-h-[68px] 
+      leading-relaxed placeholder:text-muted-foreground/60 focus-visible:outline-none 
+      disabled:cursor-not-allowed disabled:opacity-50"
       value={value}
       onChange={(e) => onChange(e.target.value)}
       onKeyDown={(event) => {
@@ -188,7 +191,7 @@ export default function Home() {
                       value={quality}
                       onValueChange={setQuality}
                     >
-                      <Select.Trigger className="inline-flex h-9 items-center justify-center rounded-lg bg-background/80 px-3 text-sm font-medium ring-offset-background transition-all duration-300 hover:bg-accent/50 hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
+                      <Select.Trigger className="inline-flex h-9 items-center justify-center rounded-lg bg-background/80 px-3 text-sm font-medium ring-offset-background transition-all duration-300 hover:bg-accent/50 hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50">
                         <Select.Value>
                           {quality === "low"
                             ? "کیفیت پایین [سریع‌تر]"
