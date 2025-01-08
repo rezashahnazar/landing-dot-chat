@@ -166,9 +166,9 @@ export default function CodeViewer({
 
       <div className="flex-1 overflow-hidden">
         {layout === "tabbed" ? (
-          <div ref={codeScrollRef} className="h-full overflow-y-auto">
+          <div ref={codeScrollRef} className="h-full overflow-auto">
             {activeTab === "code" ? (
-              <div className="relative h-full">
+              <div className="relative h-full overflow-auto">
                 <SyntaxHighlighter code={code} language={language} />
               </div>
             ) : (

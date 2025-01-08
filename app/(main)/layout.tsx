@@ -11,7 +11,7 @@ export default function Layout({
   return (
     <Providers>
       <body
-        className={`${IRANYekan.className} flex min-h-full flex-col bg-secondary/30 text-foreground font-iranyekan antialiased`}
+        className={`${IRANYekan.className} flex min-h-[100dvh] flex-col bg-secondary/30 text-foreground font-iranyekan antialiased`}
       >
         <Header />
         <main className="flex-1">{children}</main>

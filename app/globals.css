@@ -164,6 +164,7 @@
   pre, code, .preview-content {
     direction: ltr;
     text-align: left;
+    overflow-x: auto;
   }
 
   /* Refined interactive elements */

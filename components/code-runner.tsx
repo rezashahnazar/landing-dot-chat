@@ -8,10 +8,10 @@ export default function CodeRunner({
   code: string;
 }) {
   return language === "tsx" ? (
-    <div className="w-full h-full min-h-dvh">
+    <div className="w-full h-full">
       {/* Container for maintaining RTL context */}
-      <div dir="rtl" className="w-full h-full min-h-dvh flex flex-col">
-        <div dir="rtl" className="preview-content min-h-dvh">
+      <div dir="rtl" className="w-full h-full flex flex-col">
+        <div dir="rtl" className="preview-content min-h-[100dvh]">
           <CodeRunnerReact code={code} />
         </div>
       </div>

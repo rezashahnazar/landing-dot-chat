@@ -18,7 +18,7 @@ export default function SyntaxHighlighter({
     startTransition(async () => {
       const html = await codeToHtml(code, {
         lang: language,
-        theme: "github-light-default",
+        theme: "github-dark-default",
       });
 
       startTransition(() => {
@@ -29,7 +29,7 @@ export default function SyntaxHighlighter({
 
   return (
     <div
-      className="p-4 text-sm"
+      className="p-4 text-sm whitespace-pre w-full"
       dangerouslySetInnerHTML={{ __html: codeHtml }}
     />
   );

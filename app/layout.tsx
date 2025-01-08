@@ -19,7 +19,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fa" dir="rtl" className={`h-full ${IRANYekan.variable}`}>
+    <html
+      lang="fa"
+      dir="rtl"
+      className={`min-h-[100dvh] ${IRANYekan.variable}`}
+    >
       <head>
         <PlausibleProvider domain="digikala.com" />
       </head>
