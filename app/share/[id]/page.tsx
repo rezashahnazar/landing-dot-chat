@@ -56,7 +56,7 @@ export default async function Page({
   }
 
   return (
-    <div className="flex h-full w-full grow items-center justify-center">
+    <div className="flex min-h-screen w-full grow items-center justify-center">
       <CodeRunner language="tsx" code={generatedApp.code} />
     </div>
   );

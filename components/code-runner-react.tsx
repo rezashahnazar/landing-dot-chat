@@ -12,7 +12,7 @@ export default function ReactCodeRunner({ code }: { code: string }) {
     <SandpackProvider
       key={code}
       template="react-ts"
-      className="h-full w-full [&_.sp-preview-container]:flex [&_.sp-preview-container]:h-full [&_.sp-preview-container]:w-full [&_.sp-preview-container]:grow [&_.sp-preview-container]:flex-col [&_.sp-preview-container]:justify-center [&_.sp-preview-iframe]:grow"
+      className="h-full w-full min-h-dvh [&_.sp-preview-container]:flex [&_.sp-preview-container]:h-full [&_.sp-preview-container]:w-full [&_.sp-preview-container]:grow [&_.sp-preview-container]:flex-col [&_.sp-preview-container]:justify-center [&_.sp-preview-iframe]:grow"
       files={{
         "App.tsx": code,
         ...shadcnFiles,
