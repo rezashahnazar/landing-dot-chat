@@ -247,11 +247,7 @@ function AssistantMessage({
 }
 
 export function toTitleCase(rawName: string): string {
-  // Split on one or more hyphens or underscores
-  const parts = rawName.split(/[-_]+/);
-
-  // Capitalize each part and join them back with spaces
-  return parts
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
-    .join(" ");
+  // For Persian text, we don't need to capitalize or transform case
+  // Just split on hyphens or underscores and join with spaces
+  return rawName.split(/[-_]+/).join(" ");
 }
