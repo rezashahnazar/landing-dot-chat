@@ -15,6 +15,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
+import PreviewSkeleton from "@/components/preview-skeleton";
 
 export default function CodeViewer({
   chat,
@@ -203,7 +204,15 @@ export default function CodeViewer({
               <>
                 {language && (
                   <div className="flex h-full items-center justify-center">
-                    <CodeRunner language={language} code={code} key={refresh} />
+                    {streamAppIsGenerating ? (
+                      <PreviewSkeleton />
+                    ) : (
+                      <CodeRunner
+                        language={language}
+                        code={code}
+                        key={refresh}
+                      />
+                    )}
                   </div>
                 )}
               </>
@@ -224,7 +233,9 @@ export default function CodeViewer({
                 خروجی
               </div>
               <div className="flex grow items-center justify-center border-t">
-                {!streamAppIsGenerating && (
+                {streamAppIsGenerating ? (
+                  <PreviewSkeleton />
+                ) : (
                   <CodeRunner language={language} code={code} key={refresh} />
                 )}
               </div>
