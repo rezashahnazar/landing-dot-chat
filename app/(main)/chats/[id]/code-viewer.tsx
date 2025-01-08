@@ -191,9 +191,12 @@ export default function CodeViewer({
 
       <div className="flex-1 overflow-hidden">
         {layout === "tabbed" ? (
-          <div ref={codeScrollRef} className="h-full overflow-auto">
+          <div className="h-full overflow-auto">
             {activeTab === "code" ? (
-              <div className="relative h-full overflow-auto">
+              <div
+                ref={codeScrollRef}
+                className="relative h-full overflow-auto"
+              >
                 <SyntaxHighlighter code={code} language={language} />
               </div>
             ) : (
@@ -208,8 +211,13 @@ export default function CodeViewer({
           </div>
         ) : (
           <div className="flex h-full flex-col">
-            <div ref={codeScrollRef} className="h-1/2 overflow-y-auto">
-              <SyntaxHighlighter code={code} language={language} />
+            <div className="h-1/2 overflow-y-auto">
+              <div
+                ref={codeScrollRef}
+                className="relative h-full overflow-auto"
+              >
+                <SyntaxHighlighter code={code} language={language} />
+              </div>
             </div>
             <div className="flex h-1/2 flex-col">
               <div className="border-t px-4 py-3 text-sm font-medium">
