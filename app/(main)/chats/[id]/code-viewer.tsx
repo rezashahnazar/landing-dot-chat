@@ -261,15 +261,19 @@ export default function CodeViewer({
           <DialogHeader>
             <DialogTitle>اشتراک‌گذاری کد</DialogTitle>
           </DialogHeader>
-          <div className="flex items-center gap-2 mt-4">
+          <div className="flex flex-row-reverse items-center gap-2 mt-4">
             <div
               onClick={handleCopyLink}
-              className="flex-1 p-2 border rounded-md cursor-pointer hover:bg-secondary/80 transition-colors"
+              className="flex-1 p-2 border rounded-md cursor-pointer hover:bg-secondary/80 transition-colors text-left truncate"
             >
               {message &&
                 new URL(`/share/v2/${message.id}`, window.location.href).href}
             </div>
-            <Button onClick={handleCopyLink} variant="secondary">
+            <Button
+              onClick={handleCopyLink}
+              variant="secondary"
+              className="shrink-0"
+            >
               {copied ? "کپی شد!" : "کپی"}
             </Button>
           </div>
