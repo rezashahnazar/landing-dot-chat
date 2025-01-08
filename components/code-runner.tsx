@@ -11,8 +11,7 @@ export default function CodeRunner({
     <div className="w-full h-full">
       {/* Container for maintaining RTL context */}
       <div dir="rtl" className="w-full h-full flex flex-col">
-        {/* Preview container that forces LTR only for code blocks */}
-        <div dir="ltr" className="preview-content">
+        <div dir="rtl" className="preview-content">
           <CodeRunnerReact code={code} />
         </div>
       </div>

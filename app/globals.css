@@ -141,24 +141,10 @@
     text-align: right;
   }
   
-  @layer components {
-    /* RTL wrapper for preview content */
-    .preview-wrapper {
-      @apply w-full h-full;
-      direction: rtl;
-    }
-
-    /* Force LTR only for actual code blocks while maintaining RTL context */
-    .preview-content {
-      direction: ltr;
-      text-align: left;
-    }
-
-    /* Ensure RTL for Persian text within preview */
-    .preview-content [lang="fa"] {
-      direction: rtl;
-      text-align: right;
-    }
+  /* Keep code blocks and preview LTR */
+  pre, code, .preview-content {
+    direction: ltr;
+    text-align: left;
   }
 
   /* Refined interactive elements */
