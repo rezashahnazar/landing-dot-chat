@@ -24,7 +24,7 @@ export async function createChat(
       {
         role: "system",
         content:
-          "You are a chatbot helping the user create a simple app or script, and your current job is to create a succinct title, maximum 3-5 words, for the chat given their initial prompt. Please return only the title.",
+          "You are a chatbot helping users create apps and scripts. Your current task is to create a short Persian title (3-5 words) for the chat based on their initial prompt. The title must be in Persian/Farsi language. Please return only the Persian title.",
       },
       {
         role: "user",
