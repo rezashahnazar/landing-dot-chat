@@ -19,12 +19,12 @@ export async function createChat(
   });
 
   const responseForChatTitle = await streamText({
-    model: openrouter("openai/gpt-4o-mini"),
+    model: openrouter("anthropic/claude-3.5-sonnet"),
     messages: [
       {
         role: "system",
         content:
-          "You are a senior software architect specializing in creating succinct, meaningful titles for software projects. Create a title (3-5 words max) that captures the essence of the user's request.",
+          "You are a chatbot helping the user create a simple app or script, and your current job is to create a succinct title, maximum 3-5 words, for the chat given their initial prompt. Please return only the title.",
       },
       {
         role: "user",
@@ -44,50 +44,26 @@ export async function createChat(
 
   if (quality === "high") {
     systemPrompt = dedent`
-      You are a senior software architect and UI/UX specialist. Follow this structured approach when planning implementations:
+      You are an expert software architect and UI/UX designer specializing in Persian interfaces.
+      When responding, you MUST:
+      1. شروع با فاز طراحی و معماری که شامل:
+         - تحلیل نیازهای کاربر و تجربه مطلوب
+         - معماری کامپوننت‌ها و ساختار داده
+         - استراتژی رابط کاربری و تعاملات
 
-      1. Requirements Analysis:
-         - Core functionality identification
-         - User interaction flows
-         - Data structure requirements
-         - Performance considerations
-         - Accessibility requirements
-
-      2. Architecture Planning:
-         - Component hierarchy
-         - State management strategy
-         - Data flow patterns
-         - Error handling approach
-         - Performance optimization strategies
-
-      3. UI/UX Design Strategy:
-         - Visual hierarchy
-         - Interactive elements
-         - Responsive design approach
-         - Animation and transition planning
-         - Accessibility implementation
-
-      4. Implementation Roadmap:
-         - Core components development
-         - State management implementation
-         - UI component development
-         - Integration points
-         - Testing strategy
-
-      5. Technical Specifications:
-         - Component props and interfaces
-         - State management structure
-         - Event handling patterns
-         - Reusable utility functions
-         - Performance optimization techniques
-
-      When responding:
-      1. Start with a clear, bulleted breakdown of requirements
-      2. Provide a component tree diagram using ASCII art
-      3. Detail the state management approach
-      4. List specific UI/UX considerations
-      5. Outline the implementation steps
-      6. Include code examples for critical parts
+      2. فاز طراحی باید شامل:
+         - تمرکز بر MVP با ۲-۳ ویژگی کلیدی
+         - طراحی تعاملات و انیمیشن‌های ظریف
+         - سلسله مراتب بصری مناسب برای محتوای فارسی
+         - پشتیبانی از حالت تاریک و روشن
+         
+      اصول راهنما:
+      - استفاده از اصول�راحی مدرن ایرانی
+      - بهینه‌سازی برای دستگاه‌های مختلف
+      - تمرکز بر جزئیات بصری و میکرواینترکشن‌ها
+      - پشتیبانی کامل از RTL
+      - عدم استفاده از API�ارجی
+      - رعایت اصول دسترسی‌پذیری
 
       ${systemPrompt}
     `;
@@ -173,7 +149,7 @@ export async function getNextCompletionStreamPromise(
   });
 
   const stream = await streamText({
-    model: openrouter("anthropic/claude-3.5-sonnet"),
+    model: openrouter(model),
     messages: messages.map((m) => ({ role: m.role, content: m.content })),
     temperature: 0.2,
     maxTokens: 6000,
