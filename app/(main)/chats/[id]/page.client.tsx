@@ -15,6 +15,7 @@ import CodeViewer from "./code-viewer";
 import CodeViewerLayout from "./code-viewer-layout";
 import type { Chat } from "./page";
 import { Context } from "../../providers";
+import { cn } from "@/lib/utils";
 
 export default function PageClient({ chat }: { chat: Chat }) {
   const context = use(Context);
@@ -96,14 +97,41 @@ export default function PageClient({ chat }: { chat: Chat }) {
   }, [chat.id, router, streamPromise, context]);
 
   return (
-    <div className="fixed inset-0 flex overflow-hidden bg-background/90">
-      <div className="flex h-full w-full flex-col pt-14 lg:w-1/2">
-        <div className="flex h-14 pt-2 shrink-0 items-center border-b bg-slate-700/80 px-4">
+    <div className="chat-layout">
+      <div
+        className={cn(
+          "code-viewer-container",
+          isShowingCodeViewer && "visible"
+        )}
+      >
+        {isShowingCodeViewer && (
+          <div className="code-viewer h-full">
+            <CodeViewer
+              streamText={streamText}
+              chat={chat}
+              message={activeMessage}
+              onMessageChange={setActiveMessage}
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+              onClose={() => {
+                setActiveMessage(undefined);
+                setIsShowingCodeViewer(false);
+              }}
+            />
+          </div>
+        )}
+      </div>
+
+      <div className={cn("chat-section", isShowingCodeViewer && "with-code")}>
+        <div className="chat-header">
+          <Link href="/" className="chat-header-back">
+            <ArrowLeft className="w-5 h-5" />
+          </Link>
           <h1 className="text-lg font-medium text-foreground">{chat.title}</h1>
         </div>
 
-        <div className="relative flex flex-1 flex-col overflow-hidden">
-          <div className="absolute inset-0 flex flex-col">
+        <div className="chat-messages">
+          <div className="chat-messages-container">
             <ChatLog
               chat={chat}
               streamText={streamText}
@@ -118,38 +146,17 @@ export default function PageClient({ chat }: { chat: Chat }) {
                 }
               }}
             />
-
-            <ChatBox
-              chat={chat}
-              onNewStreamPromise={setStreamPromise}
-              isStreaming={!!streamPromise}
-            />
           </div>
         </div>
-      </div>
 
-      <CodeViewerLayout
-        isShowing={isShowingCodeViewer}
-        onClose={() => {
-          setActiveMessage(undefined);
-          setIsShowingCodeViewer(false);
-        }}
-      >
-        {isShowingCodeViewer && (
-          <CodeViewer
-            streamText={streamText}
+        <div className="chat-input-container">
+          <ChatBox
             chat={chat}
-            message={activeMessage}
-            onMessageChange={setActiveMessage}
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-            onClose={() => {
-              setActiveMessage(undefined);
-              setIsShowingCodeViewer(false);
-            }}
+            onNewStreamPromise={setStreamPromise}
+            isStreaming={!!streamPromise}
           />
-        )}
-      </CodeViewerLayout>
+        </div>
+      </div>
     </div>
   );
 }

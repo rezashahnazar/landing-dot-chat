@@ -232,20 +232,38 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 relative">
+                {/* Premium container effects */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.015] via-transparent to-primary/[0.015] rounded-xl" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-background/80 via-transparent to-background/80 backdrop-blur-sm rounded-xl" />
+
+                {/* Cards */}
                 {SUGGESTED_PROMPTS.map((prompt) => (
                   <button
                     key={prompt.title}
                     type="button"
-                    className="group relative overflow-hidden rounded-xl border bg-background/50 p-4 text-right backdrop-blur-sm transition-all duration-500 hover:bg-muted/30 hover:shadow-md hover:scale-[1.02] active:translate-y-[0.5px]"
+                    className="group relative overflow-hidden rounded-xl border border-border/40 bg-gradient-to-br from-[#151515] via-[#171717] to-[#151515] p-4 text-right backdrop-blur-sm transition-all duration-500 hover:scale-[1.02] active:translate-y-[0.5px]"
                     onClick={() => handleSuggestionClick(prompt.description)}
                   >
-                    <div className="mb-2 text-base font-semibold text-foreground/90 group-hover:text-foreground">
-                      {prompt.title}
+                    {/* Premium inner shadow and highlight effects */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.03),transparent_50%)]" />
+                    <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="absolute inset-x-0 -bottom-px h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
+
+                    {/* Card content with enhanced typography */}
+                    <div className="relative">
+                      <div className="mb-2 text-base font-semibold bg-gradient-to-br from-foreground/95 to-foreground/80 bg-clip-text text-transparent group-hover:from-foreground group-hover:to-foreground/90">
+                        {prompt.title}
+                      </div>
+                      <p className="text-sm leading-relaxed text-muted-foreground/70 group-hover:text-muted-foreground/90">
+                        {prompt.description}
+                      </p>
                     </div>
-                    <p className="text-sm leading-relaxed text-muted-foreground/80 group-hover:text-muted-foreground">
-                      {prompt.description}
-                    </p>
+
+                    {/* Hover effects */}
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,59,48,0.05),transparent_60%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                    <div className="absolute inset-0 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.02)] group-hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]" />
                   </button>
                 ))}
               </div>

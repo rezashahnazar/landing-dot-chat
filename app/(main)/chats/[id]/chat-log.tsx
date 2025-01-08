@@ -38,9 +38,9 @@ export default function ChatLog({
   }, [streamText, planningPart?.content, hasCodePart]);
 
   return (
-    <div className="flex-1 overflow-hidden bg-background/90">
-      <div ref={scrollRef} className="h-full overflow-y-auto px-4 pb-6 ">
-        <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 pt-6">
+    <div className="flex-1 overflow-hidden">
+      <div ref={scrollRef} className="h-full overflow-y-auto">
+        <div className="mx-auto flex w-full max-w-3xl flex-col gap-4 pt-6">
           <UserMessage content={chat.prompt} />
 
           {chat.messages.slice(2).map((message) => (
@@ -64,13 +64,13 @@ export default function ChatLog({
           {streamText && (
             <>
               {planningPart && (
-                <div className="rounded-lg border bg-muted/30 p-4">
+                <div className="message-bubble message-bubble-assistant">
                   <div className="mb-2 flex items-center gap-2 text-sm font-medium text-primary">
                     <Sparkles className="h-4 w-4" />
                     <span>در حال برنامه‌ریزی...</span>
                   </div>
                   <Markdown
-                    className="prose prose-neutral max-w-none text-right text-sm text-muted-foreground dark:prose-invert [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
+                    className="prose prose-neutral max-w-none text-right text-sm text-foreground/90 dark:prose-invert [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
                     components={{
                       h1: ({ children }) => (
                         <h1 className="mt-6 mb-4 text-lg font-bold first:mt-0">
@@ -122,9 +122,9 @@ export default function ChatLog({
 
 function UserMessage({ content }: { content: string }) {
   return (
-    <div className="flex items-start gap-3 text-right">
-      <div className="mt-1 size-2 rotate-45 rounded-sm bg-primary" />
-      <div className="text-muted-foreground">{content}</div>
+    <div className="message-bubble message-bubble-user flex items-start gap-3 text-right">
+      <div className="mt-1 size-2 rotate-45 rounded-sm bg-primary/80" />
+      <div className="text-foreground/90">{content}</div>
     </div>
   );
 }
@@ -147,14 +147,14 @@ function AssistantMessage({
   const parts = splitByFirstCodeFence(content);
 
   return (
-    <div>
+    <div className="message-bubble message-bubble-assistant">
       {parts.map((part, i) => (
         <div key={i}>
           {part.type === "text" &&
             !part.content.includes("```") &&
             (!skipInitialText || i > 0) && (
               <Markdown
-                className="prose prose-neutral max-w-none text-right text-muted-foreground dark:prose-invert [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
+                className="prose prose-neutral max-w-none text-right text-foreground/90 dark:prose-invert [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
                 components={{
                   h1: ({ children }) => (
                     <h1 className="mt-6 mb-4 text-lg font-bold first:mt-0">
@@ -189,32 +189,32 @@ function AssistantMessage({
             )}
           {(part.type === "first-code-fence" ||
             part.type === "first-code-fence-generating") && (
-            <div className="my-4 ">
+            <div className="my-4">
               <button
                 disabled={part.type === "first-code-fence-generating"}
                 className={cn(
-                  "inline-flex w-full items-center gap-3 rounded-lg border p-3 transition-colors",
+                  "glass-panel glass-panel-hover inline-flex w-full items-center gap-3 rounded-xl p-3 transition-all duration-300",
                   part.type === "first-code-fence-generating"
-                    ? "bg-muted"
+                    ? "opacity-80"
                     : isActive
-                      ? "border-primary bg-primary/5"
-                      : "bg-background hover:bg-muted/50"
+                      ? "bg-primary/10 border-primary/20"
+                      : ""
                 )}
                 onClick={() => message && onMessageClick(message)}
               >
                 <div
                   className={cn(
-                    "flex size-8 items-center justify-center rounded-md font-medium",
+                    "flex size-8 items-center justify-center rounded-lg font-medium backdrop-blur-sm",
                     part.type === "first-code-fence-generating"
                       ? "bg-muted-foreground/10 text-muted-foreground"
                       : isActive
-                        ? "bg-primary/10 text-primary"
-                        : "bg-muted text-muted-foreground"
+                        ? "bg-primary/20 text-primary"
+                        : "bg-white/5 text-foreground/80"
                   )}
                 >
                   {version}
                 </div>
-                <div className="flex flex-col gap-1 text-right  ">
+                <div className="flex flex-col gap-1 text-right">
                   {part.type === "first-code-fence-generating" ? (
                     <div className="text-sm font-medium">در حال ساخت...</div>
                   ) : (
@@ -223,7 +223,7 @@ function AssistantMessage({
                         {toTitleCase(part.filename.name)}{" "}
                         {version !== 1 && `نسخه ${version}`}
                       </div>
-                      <div className="text-xs text-muted-foreground">
+                      <div className="text-xs text-foreground/60">
                         {part.filename.name}
                         {version !== 1 && `-v${version}`}
                         {"."}
@@ -233,9 +233,9 @@ function AssistantMessage({
                   )}
                 </div>
                 {part.type === "first-code-fence-generating" ? (
-                  <Loader2 className="mr-auto h-4 w-4 animate-spin text-muted-foreground" />
+                  <Loader2 className="mr-auto h-4 w-4 animate-spin text-foreground/60" />
                 ) : (
-                  <ArrowLeft className="mr-auto h-4 w-4 text-muted-foreground" />
+                  <ArrowLeft className="mr-auto h-4 w-4 text-foreground/60" />
                 )}
               </button>
             </div>

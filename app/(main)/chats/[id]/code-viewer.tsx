@@ -129,13 +129,13 @@ export default function CodeViewer({
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex h-14 shrink-0 items-center justify-between bg-slate-700/80 border-b px-4">
+      <div className="flex h-14 shrink-0 items-center justify-between glass-panel border-b px-4 z-10">
         <div className="flex items-center gap-4">
           <Button
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="text-muted-foreground hover:text-foreground"
+            className="text-foreground/60 hover:text-foreground/90 rounded-xl"
           >
             <X className="h-4 w-4" />
             <span className="sr-only">بستن</span>
@@ -145,23 +145,16 @@ export default function CodeViewer({
           </h2>
         </div>
         {layout === "tabbed" && (
-          <div className="flex rounded-lg border p-1">
+          <div className="flex glass-panel rounded-xl p-1">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => onTabChange("code")}
               className={cn(
-                [
-                  "h-7 px-5 rounded-sm text-xs",
-                  "transition-all duration-300 ease-out",
-                  "hover:bg-secondary/80",
-                  activeTab === "code" &&
-                    [
-                      "bg-primary text-primary-foreground",
-                      "hover:bg-primary/90",
-                      "shadow-[0_2px_8px_-2px] shadow-primary/20",
-                    ].join(" "),
-                ].join(" ")
+                "h-7 px-5 rounded-lg text-xs transition-all duration-300",
+                "hover:bg-white/5",
+                activeTab === "code" &&
+                  "bg-primary/20 text-primary hover:bg-primary/30"
               )}
             >
               کد
@@ -171,17 +164,10 @@ export default function CodeViewer({
               size="sm"
               onClick={() => onTabChange("preview")}
               className={cn(
-                [
-                  "h-7 px-5 rounded-sm text-xs",
-                  "transition-all duration-300 ease-out",
-                  "hover:bg-secondary/80",
-                  activeTab === "preview" &&
-                    [
-                      "bg-primary text-primary-foreground",
-                      "hover:bg-primary/90",
-                      "shadow-[0_2px_8px_-2px] shadow-primary/20",
-                    ].join(" "),
-                ].join(" ")
+                "h-7 px-5 rounded-lg text-xs transition-all duration-300",
+                "hover:bg-white/5",
+                activeTab === "preview" &&
+                  "bg-primary/20 text-primary hover:bg-primary/30"
               )}
             >
               پیش‌نمایش
@@ -190,7 +176,7 @@ export default function CodeViewer({
         )}
       </div>
 
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-hidden bg-background/30 backdrop-blur-md">
         {layout === "tabbed" ? (
           <div className="h-full overflow-auto">
             {activeTab === "code" ? (
@@ -203,15 +189,17 @@ export default function CodeViewer({
             ) : (
               <>
                 {language && (
-                  <div className="flex h-full items-center justify-center">
+                  <div className="flex h-full items-center justify-center p-4">
                     {streamAppIsGenerating ? (
                       <PreviewSkeleton />
                     ) : (
-                      <CodeRunner
-                        language={language}
-                        code={code}
-                        key={refresh}
-                      />
+                      <div className="w-full h-full glass-panel rounded-xl overflow-hidden">
+                        <CodeRunner
+                          language={language}
+                          code={code}
+                          key={refresh}
+                        />
+                      </div>
                     )}
                   </div>
                 )}
@@ -229,10 +217,10 @@ export default function CodeViewer({
               </div>
             </div>
             <div className="flex h-1/2 flex-col">
-              <div className="border-t px-4 py-3 text-sm font-medium">
+              <div className="glass-panel border-t px-4 py-3 text-sm font-medium">
                 خروجی
               </div>
-              <div className="flex grow items-center justify-center border-t">
+              <div className="flex grow items-center justify-center glass-panel">
                 {streamAppIsGenerating ? (
                   <PreviewSkeleton />
                 ) : (
@@ -244,55 +232,44 @@ export default function CodeViewer({
         )}
       </div>
 
-      <div className="flex h-14 shrink-0 items-center justify-between bg-slate-700/80 border-t px-4">
+      <div className="flex h-14 shrink-0 items-center justify-between glass-panel border-t px-4">
         <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-8 gap-1.5"
-            onClick={() => setRefresh((r) => r + 1)}
-          >
-            <RefreshCw className="h-3.5 w-3.5" />
-            <span>بازنشانی</span>
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-8 gap-1.5"
-            disabled={!message || !!streamApp}
-            onClick={handleShare}
-          >
-            <Share2 className="h-3.5 w-3.5" />
-            <span>اشتراک‌گذاری</span>
-          </Button>
-        </div>
-
-        <div className="flex items-center gap-3">
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8"
-            disabled={!previousMessage}
+            onClick={() => setRefresh((r) => r + 1)}
+            className="rounded-xl hover:bg-white/5"
+          >
+            <RefreshCw className="h-4 w-4" />
+            <span className="sr-only">بازنشانی</span>
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleShare}
+            className="rounded-xl hover:bg-white/5"
+          >
+            <Share2 className="h-4 w-4" />
+            <span className="sr-only">اشتراک‌گذاری</span>
+          </Button>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => previousMessage && onMessageChange(previousMessage)}
+            disabled={!previousMessage}
+            className="rounded-xl hover:bg-white/5 disabled:opacity-50"
           >
             <ChevronRight className="h-4 w-4" />
             <span className="sr-only">نسخه قبلی</span>
           </Button>
-
-          <p className="text-sm">
-            نسخه <span className="tabular-nums">{currentVersion + 1}</span>{" "}
-            <span className="text-muted-foreground">از</span>{" "}
-            <span className="tabular-nums">
-              {Math.max(currentVersion + 1, assistantMessages.length)}
-            </span>
-          </p>
-
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8"
-            disabled={!nextMessage}
             onClick={() => nextMessage && onMessageChange(nextMessage)}
+            disabled={!nextMessage}
+            className="rounded-xl hover:bg-white/5 disabled:opacity-50"
           >
             <ChevronLeft className="h-4 w-4" />
             <span className="sr-only">نسخه بعدی</span>
@@ -301,24 +278,19 @@ export default function CodeViewer({
       </div>
 
       <Dialog open={showShareDialog} onOpenChange={setShowShareDialog}>
-        <DialogContent>
+        <DialogContent className="glass-panel sm:max-w-md">
           <DialogHeader>
             <DialogTitle>اشتراک‌گذاری کد</DialogTitle>
           </DialogHeader>
-          <div className="flex flex-row-reverse items-center gap-2 mt-4">
-            <div
-              onClick={handleCopyLink}
-              className="flex-1 p-2 border rounded-md cursor-pointer hover:bg-secondary/80 transition-colors text-left truncate"
-            >
-              {message &&
-                new URL(`/share/v2/${message.id}`, window.location.href).href}
-            </div>
+          <div className="flex items-center space-x-2">
             <Button
+              className={cn(
+                "glass-panel-hover flex-1 text-sm",
+                copied && "bg-primary/20 text-primary"
+              )}
               onClick={handleCopyLink}
-              variant="secondary"
-              className="shrink-0"
             >
-              {copied ? "کپی شد!" : "کپی"}
+              {copied ? "کپی شد!" : "کپی لینک"}
             </Button>
           </div>
         </DialogContent>
