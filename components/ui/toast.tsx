@@ -36,7 +36,7 @@ const toastVariants = cva(
     "backdrop-blur-xl backdrop-saturate-150",
     "p-4 pr-7",
     "shadow-[0_8px_24px_-8px] shadow-foreground/20",
-    "transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
+    "transition-all duration-500 ease-&lsqb;cubic-bezier(0.34,1.56,0.64,1)&rsqb;",
     "hover:shadow-[0_12px_32px_-8px] hover:shadow-foreground/30",
     "hover:border-border/60",
     "data-[swipe=cancel]:translate-x-0",

@@ -62,7 +62,7 @@ const DrawerContent = React.forwardRef<
           "bg-gradient-to-b from-background/98 via-background/95 to-background/98",
           "backdrop-blur-xl backdrop-saturate-150",
           "shadow-[0_-8px_32px_-8px] shadow-foreground/20",
-          "transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
+          "transition-all duration-500 ease-&lsqb;cubic-bezier(0.34,1.56,0.64,1)&rsqb;",
           "before:absolute before:inset-0",
           "before:bg-gradient-to-r before:from-primary/[0.025] before:via-primary/[0.05] before:to-primary/[0.025]",
           "before:opacity-0 hover:before:opacity-100",

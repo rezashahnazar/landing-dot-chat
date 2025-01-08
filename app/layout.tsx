@@ -22,12 +22,16 @@ export default function RootLayout({
     <html
       lang="fa"
       dir="rtl"
-      className={`min-h-[100dvh] ${IRANYekan.variable} dark antialiased`}
+      className={`${IRANYekan.variable} dark antialiased`}
     >
       <head>
-        <PlausibleProvider domain="digikala.com" />
+        <PlausibleProvider domain="www.digikala.com" />
       </head>
-      {children}
+      <body
+        className={`${IRANYekan.className} flex min-h-[100dvh] flex-col bg-secondary/30 text-foreground font-iranyekan antialiased`}
+      >
+        {children}
+      </body>
     </html>
   );
 }
