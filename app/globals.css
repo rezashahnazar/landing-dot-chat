@@ -50,6 +50,25 @@
     --input: 220 26% 18%;
     --ring: 350 89% 42%;
   }
+
+  /* Add error handling styles */
+  .error-boundary {
+    @apply p-4 rounded-lg border border-destructive/50 bg-destructive/10;
+    animation: scale-in 0.2s ease-out;
+  }
+
+  .error-message {
+    @apply text-destructive font-medium;
+  }
+
+  /* Improve transition performance */
+  .card, .container, button, a {
+    @apply transition-all duration-300; /* Reduced from 500ms */
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+  }
 }
 
 @keyframes spinner {
@@ -266,4 +285,9 @@
 
 .button-hover:hover::after {
   @apply opacity-100;
+}
+
+/* Add loading state styles */
+.loading-state {
+  @apply animate-pulse bg-muted/50;
 }
