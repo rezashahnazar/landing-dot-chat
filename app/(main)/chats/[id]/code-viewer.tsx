@@ -125,9 +125,17 @@ export default function CodeViewer({
               size="sm"
               onClick={() => onTabChange("code")}
               className={cn(
-                "h-7 w-16 rounded-sm text-xs",
-                activeTab === "code" &&
-                  "bg-primary text-primary-foreground hover:bg-primary/90"
+                [
+                  "h-7 px-5 rounded-sm text-xs",
+                  "transition-all duration-300 ease-out",
+                  "hover:bg-secondary/80",
+                  activeTab === "code" &&
+                    [
+                      "bg-primary text-primary-foreground",
+                      "hover:bg-primary/90",
+                      "shadow-[0_2px_8px_-2px] shadow-primary/20",
+                    ].join(" "),
+                ].join(" ")
               )}
             >
               کد
@@ -137,9 +145,17 @@ export default function CodeViewer({
               size="sm"
               onClick={() => onTabChange("preview")}
               className={cn(
-                "h-7 w-16 rounded-sm text-xs",
-                activeTab === "preview" &&
-                  "bg-primary text-primary-foreground hover:bg-primary/90"
+                [
+                  "h-7 px-5 rounded-sm text-xs",
+                  "transition-all duration-300 ease-out",
+                  "hover:bg-secondary/80",
+                  activeTab === "preview" &&
+                    [
+                      "bg-primary text-primary-foreground",
+                      "hover:bg-primary/90",
+                      "shadow-[0_2px_8px_-2px] shadow-primary/20",
+                    ].join(" "),
+                ].join(" ")
               )}
             >
               پیش‌نمایش
