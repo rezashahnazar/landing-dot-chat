@@ -4,11 +4,17 @@ import CodeRunner from "@/components/code-runner";
 import SyntaxHighlighter from "@/components/syntax-highlighter";
 import { extractFirstCodeBlock, splitByFirstCodeFence } from "@/lib/utils";
 import { useState, useRef, useEffect } from "react";
-import { StickToBottom } from "use-stick-to-bottom";
 import { X, ChevronLeft, ChevronRight, RefreshCw, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Chat, Message } from "./page";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { toast } from "@/hooks/use-toast";
 
 export default function CodeViewer({
   chat,
@@ -37,6 +43,8 @@ export default function CodeViewer({
     (p) => p.type === "first-code-fence-generating"
   );
   const codeScrollRef = useRef<HTMLDivElement>(null);
+  const [showShareDialog, setShowShareDialog] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const code = streamApp ? streamApp.content : app?.code || "";
   const language = streamApp ? streamApp.language : app?.language || "";
@@ -61,6 +69,30 @@ export default function CodeViewer({
       : undefined;
 
   const [refresh, setRefresh] = useState(0);
+
+  const handleShare = async () => {
+    if (!message) return;
+
+    const baseUrl = window.location.href;
+    const shareUrl = new URL(`/share/v2/${message.id}`, baseUrl);
+    setShowShareDialog(true);
+  };
+
+  const handleCopyLink = async () => {
+    if (!message) return;
+
+    const baseUrl = window.location.href;
+    const shareUrl = new URL(`/share/v2/${message.id}`, baseUrl);
+
+    await navigator.clipboard.writeText(shareUrl.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+
+    toast({
+      title: "لینک کپی شد!",
+      description: "لینک اشتراک‌گذاری در کلیپ‌بورد کپی شد.",
+    });
+  };
 
   // Auto-scroll when code is being generated
   useEffect(() => {
@@ -168,6 +200,7 @@ export default function CodeViewer({
             size="sm"
             className="h-8 gap-1.5"
             disabled={!message || !!streamApp}
+            onClick={handleShare}
           >
             <Share2 className="h-3.5 w-3.5" />
             <span>اشتراک‌گذاری</span>
@@ -206,6 +239,26 @@ export default function CodeViewer({
           </Button>
         </div>
       </div>
+
+      <Dialog open={showShareDialog} onOpenChange={setShowShareDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>اشتراک‌گذاری کد</DialogTitle>
+          </DialogHeader>
+          <div className="flex items-center gap-2 mt-4">
+            <div
+              onClick={handleCopyLink}
+              className="flex-1 p-2 border rounded-md cursor-pointer hover:bg-secondary/80 transition-colors"
+            >
+              {message &&
+                new URL(`/share/v2/${message.id}`, window.location.href).href}
+            </div>
+            <Button onClick={handleCopyLink} variant="secondary">
+              {copied ? "کپی شد!" : "کپی"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
