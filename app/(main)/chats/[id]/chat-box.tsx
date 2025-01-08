@@ -62,6 +62,8 @@ export default function ChatBox({
               placeholder="سوال بعدی خود را بپرسید..."
               autoFocus={!disabled}
               required
+              autoCorrect="off"
+              spellCheck="false"
               name="prompt"
               rows={1}
               minRows={1}

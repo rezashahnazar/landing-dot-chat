@@ -97,7 +97,25 @@ export default function CodeViewer({
   // Auto-scroll when code is being generated
   useEffect(() => {
     if (streamAppIsGenerating && codeScrollRef.current) {
-      codeScrollRef.current.scrollTop = codeScrollRef.current.scrollHeight;
+      const scrollToBottom = () => {
+        if (codeScrollRef.current) {
+          codeScrollRef.current.style.scrollBehavior = "smooth";
+          codeScrollRef.current.scrollTop = codeScrollRef.current.scrollHeight;
+        }
+      };
+
+      // Immediate scroll
+      scrollToBottom();
+
+      // Delayed scroll to ensure content is rendered
+      const timeoutId = setTimeout(scrollToBottom, 100);
+
+      return () => {
+        clearTimeout(timeoutId);
+        if (codeScrollRef.current) {
+          codeScrollRef.current.style.scrollBehavior = "auto";
+        }
+      };
     }
   }, [streamAppIsGenerating, code]);
 
