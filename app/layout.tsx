@@ -28,7 +28,7 @@ export default function RootLayout({
         <PlausibleProvider domain="www.digikala.com" />
       </head>
       <body
-        className={`${IRANYekan.className} flex min-h-[100dvh] flex-col bg-secondary/30 text-foreground font-iranyekan antialiased`}
+        className={`${IRANYekan.className} flex min-h-[100dvh] flex-col bg-background text-foreground dark antialiased`}
       >
         {children}
       </body>
