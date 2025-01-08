@@ -103,7 +103,7 @@ export default function CodeViewer({
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex h-14 shrink-0 items-center justify-between border-b px-4">
+      <div className="flex h-14 shrink-0 items-center justify-between bg-slate-700/80 border-b px-4">
         <div className="flex items-center gap-4">
           <Button
             variant="ghost"
@@ -200,7 +200,7 @@ export default function CodeViewer({
         )}
       </div>
 
-      <div className="flex h-14 shrink-0 items-center justify-between border-t px-4">
+      <div className="flex h-14 shrink-0 items-center justify-between bg-slate-700/80 border-t px-4">
         <div className="flex items-center gap-2">
           <Button
             variant="outline"

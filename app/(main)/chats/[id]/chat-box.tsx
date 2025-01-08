@@ -36,7 +36,7 @@ export default function ChatBox({
   }, [disabled]);
 
   return (
-    <div className="border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <div className="border-t bg-slate-700/80">
       <div className="px-4 py-4">
         <form
           className="mx-auto flex max-w-3xl gap-2"

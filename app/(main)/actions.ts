@@ -262,7 +262,7 @@ function getSystemPrompt(shadcn: boolean): string {
       • Proper visual hierarchy for Persian content
       • Mobile-first RTL responsive design
     - For placeholder images use:
-      <div className="bg-gradient-to-br from-gray-100 to-gray-200 border-2 border-dashed rounded-xl w-16 h-16" />
+      <div className="bg-gradient-to-br from-gray-100 to-gray-200 border-2 border-dashed rounded-xl w-16 h-14" />
     
     Accessibility:
     - Ensure proper RTL keyboard navigation

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { startTransition, use, useState } from "react";
+import { startTransition, use, useState, useRef } from "react";
 import { useFormStatus } from "react-dom";
 import assert from "assert";
 import * as Select from "@radix-ui/react-select";
@@ -57,19 +57,24 @@ const SUGGESTED_PROMPTS = [
 function PromptTextarea({
   value,
   onChange,
+  inputRef,
 }: {
   value: string;
   onChange: (value: string) => void;
+  inputRef?: React.RefObject<HTMLTextAreaElement>;
 }) {
   const { pending } = useFormStatus();
 
   return (
     <TextareaAutosize
+      ref={inputRef}
       placeholder="مثلاً: یه تجربه باحال برای معرفی محصول جدیدمون می‌خوام..."
       required
       name="prompt"
       rows={1}
       disabled={pending}
+      autoCorrect="off"
+      spellCheck="false"
       className="min-h-[72px] w-full resize-none rounded-md border-0 bg-transparent p-3.5 text-[0.9375rem] leading-relaxed placeholder:text-muted-foreground/60 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
       value={value}
       onChange={(e) => onChange(e.target.value)}
@@ -88,19 +93,28 @@ function PromptTextarea({
 export default function Home() {
   const { setStreamPromise } = use(Context);
   const router = useRouter();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [prompt, setPrompt] = useState("");
   const [model, setModel] = useState(MODELS[0].value);
   const [quality, setQuality] = useState("high");
 
+  const handleSuggestionClick = (suggestion: string) => {
+    setPrompt(suggestion);
+    // Focus the textarea after setting the prompt
+    setTimeout(() => {
+      textareaRef.current?.focus();
+    }, 0);
+  };
+
   const selectedModel = MODELS.find((m) => m.value === model);
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-b from-background to-muted/20">
+    <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-t from-background/90 to-background/95">
       <div className="container mx-auto max-w-5xl px-4 py-10 md:py-16 lg:py-24">
         <div className="flex flex-col items-center justify-center space-y-12">
           <div className="flex flex-col items-center space-y-10 text-center">
-            <div className="glass inline-flex items-center rounded-full bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary/90 shadow-sm transition-all duration-500 hover:bg-primary/10 hover:shadow-md">
+            <div className="glass inline-flex items-center rounded-full bg-primary/20 px-4 py-1.5 text-sm font-medium text-primary/90 shadow-sm transition-all duration-500 hover:bg-primary/10 hover:shadow-md">
               <Sparkles className="me-2 h-4 w-4" />
               جادوی هوش مصنوعی ✨
             </div>
@@ -149,8 +163,12 @@ export default function Home() {
             }}
           >
             <div className="flex flex-col space-y-8">
-              <div className="group relative overflow-hidden rounded-2xl border bg-background/50 shadow-sm backdrop-blur-sm transition-all duration-500 hover:shadow-md focus-within:shadow-md">
-                <PromptTextarea value={prompt} onChange={setPrompt} />
+              <div className="group relative overflow-hidden rounded-2xl border bg-background/80 shadow-sm backdrop-blur-sm transition-all duration-500 hover:shadow-md focus-within:shadow-md">
+                <PromptTextarea
+                  value={prompt}
+                  onChange={setPrompt}
+                  inputRef={textareaRef}
+                />
 
                 <div className="flex items-center justify-between border-t bg-muted/20 p-3">
                   <div className="flex flex-1 items-center space-x-3 space-x-reverse">
@@ -217,7 +235,7 @@ export default function Home() {
                     key={prompt.title}
                     type="button"
                     className="group relative overflow-hidden rounded-xl border bg-background/50 p-4 text-right backdrop-blur-sm transition-all duration-500 hover:bg-muted/30 hover:shadow-md hover:scale-[1.02] active:translate-y-[0.5px]"
-                    onClick={() => setPrompt(prompt.description)}
+                    onClick={() => handleSuggestionClick(prompt.description)}
                   >
                     <div className="mb-2 text-base font-semibold text-foreground/90 group-hover:text-foreground">
                       {prompt.title}

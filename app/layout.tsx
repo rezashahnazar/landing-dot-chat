@@ -22,7 +22,7 @@ export default function RootLayout({
     <html
       lang="fa"
       dir="rtl"
-      className={`min-h-[100dvh] ${IRANYekan.variable}`}
+      className={`min-h-[100dvh] ${IRANYekan.variable} dark antialiased`}
     >
       <head>
         <PlausibleProvider domain="digikala.com" />

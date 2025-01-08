@@ -27,7 +27,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-[12px] backdrop-saturate-[1.8] supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 ">
       <div className="flex h-14 px-4 items-center w-full justify-between max-w-screen-2xl mx-auto">
         <Link href="/" className="scale-in group">
           {isChatPage ? (

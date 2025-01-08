@@ -32,7 +32,7 @@ export default function CodeViewerLayout({
               <DrawerDescription>نمایش کد</DrawerDescription>
             </VisuallyHidden.Root>
 
-            <div className="flex h-[90vh] flex-col overflow-hidden bg-background pt-16">
+            <div className="flex h-[90vh] flex-col overflow-hidden bg-background pt-14">
               {children}
             </div>
           </DrawerContent>
@@ -40,7 +40,7 @@ export default function CodeViewerLayout({
       ) : (
         <div
           className={cn(
-            "h-full overflow-hidden border-r bg-background pt-16 transition-[width] duration-300",
+            "h-full overflow-hidden border-r bg-background pt-14 transition-[width] duration-300",
             isShowing ? "w-1/2" : "w-0"
           )}
         >

@@ -38,8 +38,8 @@ export default function ChatLog({
   }, [streamText, planningPart?.content, hasCodePart]);
 
   return (
-    <div className="flex-1 overflow-hidden">
-      <div ref={scrollRef} className="h-full overflow-y-auto px-4 pb-6 pt-4">
+    <div className="flex-1 overflow-hidden bg-background/90">
+      <div ref={scrollRef} className="h-full overflow-y-auto px-4 pb-6 ">
         <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
           <UserMessage content={chat.prompt} />
 
@@ -189,7 +189,7 @@ function AssistantMessage({
             )}
           {(part.type === "first-code-fence" ||
             part.type === "first-code-fence-generating") && (
-            <div className="my-4">
+            <div className="my-4 ">
               <button
                 disabled={part.type === "first-code-fence-generating"}
                 className={cn(
@@ -214,7 +214,7 @@ function AssistantMessage({
                 >
                   {version}
                 </div>
-                <div className="flex flex-col gap-1 text-right">
+                <div className="flex flex-col gap-1 text-right  ">
                   {part.type === "first-code-fence-generating" ? (
                     <div className="text-sm font-medium">در حال ساخت...</div>
                   ) : (

@@ -96,9 +96,9 @@ export default function PageClient({ chat }: { chat: Chat }) {
   }, [chat.id, router, streamPromise, context]);
 
   return (
-    <div className="fixed inset-0 flex overflow-hidden">
-      <div className="flex h-full w-full flex-col pt-16 lg:w-1/2">
-        <div className="flex h-14 shrink-0 items-center border-b bg-background px-4">
+    <div className="fixed inset-0 flex overflow-hidden bg-background/90">
+      <div className="flex h-full w-full flex-col pt-14 lg:w-1/2">
+        <div className="flex h-14 pt-2 shrink-0 items-center border-b bg-slate-700/80 px-4">
           <h1 className="text-lg font-medium text-foreground">{chat.title}</h1>
         </div>
 
