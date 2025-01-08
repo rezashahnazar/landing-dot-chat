@@ -40,7 +40,7 @@ export default function ChatLog({
   return (
     <div className="flex-1 overflow-hidden bg-background/90">
       <div ref={scrollRef} className="h-full overflow-y-auto px-4 pb-6 ">
-        <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
+        <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 pt-6">
           <UserMessage content={chat.prompt} />
 
           {chat.messages.slice(2).map((message) => (
