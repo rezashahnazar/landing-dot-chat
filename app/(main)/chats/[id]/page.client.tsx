@@ -5,14 +5,10 @@ import { splitByFirstCodeFence } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { startTransition, use, useEffect, useRef, useState } from "react";
-import { useFormStatus } from "react-dom";
-import TextareaAutosize from "react-textarea-autosize";
 import { ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import ChatBox from "./chat-box";
 import ChatLog from "./chat-log";
 import CodeViewer from "./code-viewer";
-import CodeViewerLayout from "./code-viewer-layout";
 import type { Chat } from "./page";
 import { Context } from "../../providers";
 import { cn } from "@/lib/utils";
@@ -97,15 +93,16 @@ export default function PageClient({ chat }: { chat: Chat }) {
   }, [chat.id, router, streamPromise, context]);
 
   return (
-    <div className="chat-layout">
+    <div className="fixed inset-0 flex overflow-hidden bg-[radial-gradient(circle_at_70%_30%,hsl(220_20%_12%/0.9)_0%,hsl(var(--background))_100%)] backdrop-blur-2xl before:content-[''] before:fixed before:inset-0 before:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.03)_1px,transparent_1px)] before:bg-[length:clamp(20px,2vw,32px)_clamp(20px,2vw,32px)] before:animate-float-fur before:pointer-events-none before:opacity-80 before:mask-[radial-gradient(circle_at_50%_50%,black,transparent_80%)]">
+      {/* Code & Preview Section */}
       <div
         className={cn(
-          "code-viewer-container",
-          isShowingCodeViewer && "visible"
+          "fixed top-14 bottom-0 left-0 w-1/2 transition-all duration-700 ease-out -translate-x-full",
+          isShowingCodeViewer && "translate-x-0 animate-slide-from-left"
         )}
       >
         {isShowingCodeViewer && (
-          <div className="code-viewer h-full">
+          <div className="h-full rounded-2xl bg-gradient-to-[165deg] from-white/[0.02] to-white/[0.01] backdrop-blur-2xl border border-white/[0.03] shadow-[0_8px_24px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.04)] animate-scale-in">
             <CodeViewer
               streamText={streamText}
               chat={chat}
@@ -122,16 +119,27 @@ export default function PageClient({ chat }: { chat: Chat }) {
         )}
       </div>
 
-      <div className={cn("chat-section", isShowingCodeViewer && "with-code")}>
-        <div className="chat-header">
-          <Link href="/" className="chat-header-back">
+      {/* Chat Section */}
+      <div
+        className={cn(
+          "flex flex-col pt-14 transition-all duration-700 w-full ml-auto origin-center",
+          isShowingCodeViewer && "lg:w-1/2 animate-slide-to-right"
+        )}
+      >
+        {/* Chat Header */}
+        <div className="flex h-14 shrink-0 items-center border-b px-6 z-10 bg-gradient-to-r from-white/[0.02] to-white/[0.01] backdrop-blur-2xl border-white/[0.03] shadow-[0_4px_24px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.03)] animate-slide-down">
+          <Link
+            href="/"
+            className="mr-3 p-2.5 rounded-xl hover:bg-white/10 transition-all duration-300 hover:-translate-x-0.5 active:translate-x-0"
+          >
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <h1 className="text-lg font-medium text-foreground">{chat.title}</h1>
         </div>
 
-        <div className="chat-messages">
-          <div className="chat-messages-container">
+        {/* Chat Messages */}
+        <div className="flex-1 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_2rem,black_calc(100%_-_2rem),transparent)]">
+          <div className="h-full overflow-y-auto px-6 pb-6 scroll-smooth">
             <ChatLog
               chat={chat}
               streamText={streamText}
@@ -149,7 +157,8 @@ export default function PageClient({ chat }: { chat: Chat }) {
           </div>
         </div>
 
-        <div className="chat-input-container">
+        {/* Chat Input */}
+        <div className="px-6 pb-6 animate-slide-up">
           <ChatBox
             chat={chat}
             onNewStreamPromise={setStreamPromise}

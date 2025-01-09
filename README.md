@@ -1,4 +1,4 @@
-# LeelE Coder
+# Landing Dot Chat
 
 ## Cloning & running
 

@@ -3,9 +3,9 @@ import PlausibleProvider from "next-plausible";
 import { IRANYekan } from "@/fonts/local-fonts";
 import "./globals.css";
 
-let title = "LeelE Coder - تولید صفحه وب با هوش مصنوعی";
-let description = "تولید صفحه وب با هوش مصنوعی";
-let url = "https://www.digikala.com/";
+let title = "Landing.Chat - ساخت لندینگ با هوش مصنوعی";
+let description = "ساخت لندینگ با هوش مصنوعی";
+let url = "https://landing.chat/";
 
 export const metadata: Metadata = {
   metadataBase: new URL(url),
@@ -25,7 +25,7 @@ export default function RootLayout({
       className={`${IRANYekan.variable} dark antialiased`}
     >
       <head>
-        <PlausibleProvider domain="www.digikala.com" />
+        <PlausibleProvider domain="landing.chat" />
       </head>
       <body
         className={`${IRANYekan.className} flex min-h-[100dvh] flex-col bg-background text-foreground dark antialiased`}

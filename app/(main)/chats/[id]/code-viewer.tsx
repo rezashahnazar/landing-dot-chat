@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
 import PreviewSkeleton from "@/components/preview-skeleton";
+import { usePathname } from "next/navigation";
 
 export default function CodeViewer({
   chat,
@@ -71,19 +72,18 @@ export default function CodeViewer({
 
   const [refresh, setRefresh] = useState(0);
 
+  const pathname = usePathname();
+
   const handleShare = async () => {
     if (!message) return;
-
-    const baseUrl = window.location.href;
-    const shareUrl = new URL(`/share/v2/${message.id}`, baseUrl);
     setShowShareDialog(true);
   };
 
   const handleCopyLink = async () => {
     if (!message) return;
 
-    const baseUrl = window.location.href;
-    const shareUrl = new URL(`/share/v2/${message.id}`, baseUrl);
+    const baseUrl = `${process.env.NEXT_PUBLIC_APP_URL || window?.location?.origin}${pathname}`;
+    const shareUrl = new URL(`/share/${message.id}`, baseUrl);
 
     await navigator.clipboard.writeText(shareUrl.href);
     setCopied(true);

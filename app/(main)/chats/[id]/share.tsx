@@ -3,13 +3,16 @@
 import ShareIcon from "@/components/icons/share-icon";
 import { toast } from "@/hooks/use-toast";
 import { Message } from "@prisma/client";
+import { usePathname } from "next/navigation";
 
 export function Share({ message }: { message?: Message }) {
+  const pathname = usePathname();
+
   async function shareAction() {
     if (!message) return;
 
-    const baseUrl = window.location.href;
-    const shareUrl = new URL(`/share/v2/${message.id}`, baseUrl);
+    const baseUrl = `${process.env.NEXT_PUBLIC_APP_URL || window?.location?.origin}${pathname}`;
+    const shareUrl = new URL(`/share/${message.id}`, baseUrl);
 
     toast({
       title: "App Published!",

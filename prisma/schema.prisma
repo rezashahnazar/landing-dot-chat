@@ -23,7 +23,7 @@ model Chat {
   quality           String
   prompt            String
   title             String
-  leeleCoderVersion String    @default("v2")
+  landingDotChatVersion String    @default("v2")
   shadcn            Boolean
   messages          Message[]
   createdAt         DateTime  @default(now())

@@ -1,9 +1,7 @@
 "use client";
 import Link from "next/link";
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
-import { GithubIcon, ArrowRight, Share2 } from "lucide-react";
+import { ArrowRight, Share2 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import {
   Dialog,
@@ -13,15 +11,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
+import AnimatedLogo from "@/components/icons/animated-logo";
 
 export default function Header() {
-  const { setTheme, theme } = useTheme();
   const pathname = usePathname();
   const isChatPage = pathname.startsWith("/chats/");
   const [copied, setCopied] = useState(false);
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
+    const url = `${process.env.NEXT_PUBLIC_APP_URL || window?.location?.origin}${pathname}`;
+    navigator.clipboard.writeText(url);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -40,9 +39,12 @@ export default function Header() {
               <span className="sr-only">بازگشت به صفحه اصلی</span>
             </Button>
           ) : (
-            <span className="text-lg font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/90 hover:to-primary/70 transition-all duration-500">
-              LeelE Coder
-            </span>
+            <div className="flex items-center gap-2">
+              <AnimatedLogo className="h-8 w-8" />
+              <span className="text-lg font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/90 hover:to-primary/70 transition-all duration-500">
+                Landing.Chat
+              </span>
+            </div>
           )}
         </Link>
 
@@ -67,7 +69,7 @@ export default function Header() {
                   onClick={handleCopyLink}
                   className="flex-1 p-2 border rounded-md cursor-pointer hover:bg-secondary/80 transition-all duration-300 ease-out overflow-hidden text-ellipsis whitespace-nowrap"
                 >
-                  {window.location.href}
+                  {`${process.env.NEXT_PUBLIC_APP_URL || window.location.origin}${pathname}`}
                 </div>
                 <Button
                   onClick={handleCopyLink}

@@ -37,7 +37,7 @@ export default function ChatBox({
   }, [disabled]);
 
   return (
-    <div className="chat-input">
+    <div className="bg-gradient-to-b from-white/[0.03] to-white/[0.01] backdrop-blur-2xl border border-white/[0.03] shadow-[0_12px_36px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.04)] rounded-2xl p-4 hover:shadow-[0_20px_48px_rgba(0,0,0,0.25),inset_0_0_1px_1px_rgba(255,255,255,0.07)] focus-within:bg-gradient-to-b focus-within:from-white/[0.04] focus-within:to-white/[0.02] focus-within:shadow-[0_20px_48px_rgba(0,0,0,0.25),inset_0_0_1px_1px_rgba(255,255,255,0.07)] transition-all duration-500">
       <form
         className="mx-auto flex max-w-3xl gap-3"
         action={async (formData) => {
@@ -93,9 +93,10 @@ export default function ChatBox({
           size="icon"
           disabled={disabled}
           className={cn(
-            "glass-panel glass-panel-hover rounded-xl",
-            "bg-primary/10 hover:bg-primary/20",
-            "transition-all duration-200"
+            "bg-gradient-to-b from-white/[0.02] to-white/[0.01] backdrop-blur-2xl border border-white/[0.03] shadow-[0_8px_24px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.04)] rounded-xl",
+            "hover:bg-gradient-to-b hover:from-white/[0.03] hover:to-white/[0.02] hover:shadow-[0_20px_48px_rgba(0,0,0,0.3),inset_0_0_1px_1px_rgba(255,255,255,0.07)] hover:-translate-y-0.5",
+            "active:translate-y-0 active:duration-200",
+            "transition-all duration-500"
           )}
         >
           {disabled ? (

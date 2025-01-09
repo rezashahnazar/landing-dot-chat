@@ -22,7 +22,7 @@ export async function generateMetadata({
 
   return {
     title,
-    description: `An app generated on LeeleCoder.io: ${title}`,
+    description: `${title} | ساخته شده با landing.chat`,
     openGraph: {
       images: [`/api/og?${searchParams}`],
     },

@@ -27,33 +27,21 @@ export default async function Image({
   });
 
   const backgroundData = await readFile(
-    join(process.cwd(), "./public/dynamic-og.png")
+    join(process.cwd(), "./public/dynamic-opengraph.png")
   );
-  const backgroundSrc = Uint8Array.from(backgroundData).buffer;
+  const backgroundSrc = `data:image/png;base64,${Buffer.from(backgroundData).toString("base64")}`;
 
-  let title = message
-    ? message.chat.title
-    : "An app generated on LeeleCoder.io";
+  let title = message?.chat?.title || "ساخته شده با هوش مصنوعی | Landing.Chat";
 
   return new ImageResponse(
     (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {/* @ts-expect-error */}
-        <img src={backgroundSrc} height="100%" alt="" />
-        <div
-          style={{
-            position: "absolute",
-            fontSize: 50,
-            color: "black",
-            padding: "50px 200px",
-          }}
-        >
+      <div tw="flex justify-center items-center w-full h-full">
+        <img
+          src={backgroundSrc}
+          height="100%"
+          alt="OpenGraph Image Background"
+        />
+        <div tw="absolute text-[50px] text-white px-[200px] py-[50px]">
           {title}
         </div>
       </div>
