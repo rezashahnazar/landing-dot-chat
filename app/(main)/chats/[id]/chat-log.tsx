@@ -154,11 +154,14 @@ export default function ChatLog({
       {showScrollButton && (
         <Button
           onClick={() =>
-            lastMessageRef.current?.scrollIntoView({ behavior: "smooth" })
+            scrollRef.current?.scrollTo({
+              top: scrollRef.current.scrollHeight,
+              behavior: "smooth",
+            })
           }
           variant="outline"
           size="lg"
-          className="absolute bottom-4 left-1/2 -translate-x-1/2 !z-[100] flex items-center justify-center shadow-lg bg-background/50 text-foreground/50 !size-10 m-0 p-0 rounded-full animate-bounce"
+          className="absolute bottom-4 left-1/2 -translate-x-1/2 !z-[100] flex items-center justify-center shadow-lg bg-background/50 text-foreground/50 !size-10 m-0 p-0 rounded-full"
         >
           <ChevronDown className="h-4 w-4" />
         </Button>
@@ -169,9 +172,11 @@ export default function ChatLog({
 
 function UserMessage({ content }: { content: string }) {
   return (
-    <div className="bg-gradient-to-[135deg] from-primary/20 to-primary/5 backdrop-blur-2xl border border-white/[0.03] shadow-[0_8px_32px_rgba(0,0,0,0.15),inset_0_0_0_1px_rgba(255,255,255,0.1),0_0_0_1px_hsl(var(--primary)/0.2)] rounded-2xl p-5 my-4 animate-message-slide-in origin-center hover:-translate-y-0.5 hover:scale-[1.002] hover:shadow-[0_12px_36px_rgba(0,0,0,0.2),inset_0_0_0_1px_rgba(255,255,255,0.12),0_0_0_1px_rgba(255,255,255,0.08)] flex items-start gap-3 text-right">
-      <div className="mt-1 size-2 rotate-45 rounded-sm bg-primary/80" />
-      <div className="text-foreground/90">{content}</div>
+    <div className="bg-gradient-to-[135deg] from-primary/10 to-primary/5 backdrop-blur-2xl border border-white/[0.03] shadow-[0_8px_16px_rgba(0,0,0,0.1)] rounded-2xl p-4 my-3 animate-message-slide-in flex items-start gap-3 text-right">
+      <div className="mt-1 size-2 rotate-45 rounded-sm bg-primary/60" />
+      <div className="text-foreground/80 text-xs leading-relaxed">
+        {content}
+      </div>
     </div>
   );
 }
@@ -194,21 +199,21 @@ function AssistantMessage({
   const parts = splitByFirstCodeFence(content);
 
   return (
-    <div className="bg-gradient-to-[135deg] from-secondary/25 to-secondary/8 backdrop-blur-2xl border border-white/[0.03] shadow-[0_8px_32px_rgba(0,0,0,0.15),inset_0_0_0_1px_rgba(255,255,255,0.1),0_0_0_1px_hsl(var(--secondary)/0.2)] rounded-2xl p-5 my-4 animate-message-slide-in origin-center hover:-translate-y-0.5 hover:scale-[1.002] hover:shadow-[0_12px_36px_rgba(0,0,0,0.2),inset_0_0_0_1px_rgba(255,255,255,0.12),0_0_0_1px_rgba(255,255,255,0.08)]">
+    <div className="bg-gradient-to-[135deg] from-secondary/20 to-secondary/5 backdrop-blur-2xl border border-white/[0.03] shadow-[0_8px_16px_rgba(0,0,0,0.1)] rounded-2xl p-4 my-3 animate-message-slide-in">
       {!skipInitialText &&
         parts.map((part, i) => (
           <div key={i}>
             {part.type === "text" && (
               <Markdown
-                className="prose prose-neutral max-w-none text-right text-sm text-foreground/90 dark:prose-invert [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
+                className="prose prose-neutral max-w-none text-right text-xs leading-relaxed text-foreground/80 dark:prose-invert [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
                 components={{
                   h1: ({ children }) => (
-                    <h1 className="mt-6 mb-4 text-lg font-bold first:mt-0">
+                    <h1 className="mt-5 mb-3 text-sm font-bold first:mt-0">
                       {children}
                     </h1>
                   ),
                   h2: ({ children }) => (
-                    <h2 className="mt-4 mb-2 text-base font-semibold">
+                    <h2 className="mt-4 mb-2 text-xs font-semibold">
                       {children}
                     </h2>
                   ),
@@ -216,12 +221,12 @@ function AssistantMessage({
                     <p className="mb-3 last:mb-0">{children}</p>
                   ),
                   ul: ({ children }) => (
-                    <ul className="mb-3 list-disc pr-6 last:mb-0">
+                    <ul className="mb-3 list-disc pr-5 last:mb-0">
                       {children}
                     </ul>
                   ),
                   ol: ({ children }) => (
-                    <ol className="mb-3 list-decimal pr-6 last:mb-0">
+                    <ol className="mb-3 list-decimal pr-5 last:mb-0">
                       {children}
                     </ol>
                   ),
@@ -235,38 +240,39 @@ function AssistantMessage({
             )}
             {(part.type === "first-code-fence" ||
               part.type === "first-code-fence-generating") && (
-              <div className="my-4">
+              <div className="my-3">
                 <button
                   disabled={part.type === "first-code-fence-generating"}
                   className={cn(
-                    "bg-gradient-to-b from-white/[0.02] to-white/[0.01] backdrop-blur-2xl border border-white/[0.03] shadow-[0_8px_24px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.04)] inline-flex w-full items-center gap-3 rounded-xl p-3 transition-all duration-300",
+                    "bg-gradient-to-b from-white/[0.02] to-white/[0.01] backdrop-blur-2xl border border-white/[0.03] shadow-[0_4px_16px_rgba(0,0,0,0.1)] inline-flex w-full items-center gap-3 rounded-xl p-3 transition-colors duration-200",
                     part.type === "first-code-fence-generating"
                       ? "opacity-80"
                       : isActive
-                        ? "bg-primary/10 border-primary/20"
-                        : "",
-                    "hover:shadow-[0_20px_48px_rgba(0,0,0,0.3),inset_0_0_1px_1px_rgba(255,255,255,0.07)] hover:-translate-y-0.5 active:translate-y-0 active:duration-200"
+                        ? "bg-primary/5 border-primary/10"
+                        : ""
                   )}
                   onClick={() => message && onMessageClick(message)}
                 >
                   <div
                     className={cn(
-                      "flex size-8 items-center justify-center rounded-lg font-medium backdrop-blur-sm",
+                      "flex size-6 items-center justify-center rounded-lg text-xs font-medium backdrop-blur-sm",
                       part.type === "first-code-fence-generating"
                         ? "bg-muted-foreground/10 text-muted-foreground"
                         : isActive
-                          ? "bg-primary/20 text-primary"
-                          : "bg-white/5 text-foreground/80"
+                          ? "bg-primary/10 text-primary"
+                          : "bg-white/5 text-foreground/70"
                     )}
                   >
                     {version}
                   </div>
                   <div className="flex flex-col gap-1 text-right">
                     {part.type === "first-code-fence-generating" ? (
-                      <div className="text-sm font-medium">در حال ساخت...</div>
+                      <div className="text-xs font-medium text-foreground/70">
+                        در حال ساخت...
+                      </div>
                     ) : (
                       <>
-                        <div className="text-sm font-medium">
+                        <div className="text-xs font-medium text-foreground/70">
                           {part.filename.name}{" "}
                           {version !== 1 && `نسخه ${version}`}
                         </div>

@@ -4,40 +4,87 @@
 
 @layer base {
   :root {
-    /* Warm gray palette inspired by Scottish Tabby fur */
-    --background: 220 20% 8%;
-    --foreground: 0 0% 98%;
+    /* Base neutral grey with subtle warmth */
+    --background: 212 12% 12%;
+    --foreground: 0 0% 99%;
     
-    /* Soft fur-like glass effects */
-    --card: 220 15% 12%;
-    --card-foreground: 0 0% 98%;
-    --popover: 220 15% 12%;
-    --popover-foreground: 0 0% 98%;
+    /* Elevated surfaces with subtle contrast */
+    --card: 212 12% 16%;
+    --card-foreground: 0 0% 99%;
+    --popover: 212 12% 16%;
+    --popover-foreground: 0 0% 99%;
     
-    /* White accents like fur highlights */
-    --primary: 0 0% 98%;
-    --primary-foreground: 220 20% 8%;
+    /* Refined green for primary actions */
+    --primary: 150 35% 45%;
+    --primary-foreground: 0 0% 100%;
     
-    /* Warm gray tones like tabby stripes */
-    --secondary: 220 15% 15%;
-    --secondary-foreground: 0 0% 98%;
+    /* Sophisticated neutral for secondary elements */
+    --secondary: 212 10% 22%;
+    --secondary-foreground: 0 0% 99%;
     
-    /* Muted fur colors */
-    --muted: 220 12% 18%;
-    --muted-foreground: 220 10% 80%;
+    /* Subtle background variations */
+    --muted: 212 8% 20%;
+    --muted-foreground: 215 8% 65%;
     
-    /* Soft white accents */
-    --accent: 0 0% 98%;
-    --accent-foreground: 220 20% 8%;
+    /* Complementary green accent */
+    --accent: 150 25% 40%;
+    --accent-foreground: 0 0% 100%;
     
-    /* System colors */
-    --destructive: 0 70% 60%;
-    --destructive-foreground: 0 0% 98%;
+    /* High-contrast system indicators */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
     
-    /* Soft borders like fur patterns */
-    --border: 220 15% 20%;
-    --input: 220 15% 14%;
-    --ring: 0 0% 98%;
-    --radius: 1.5rem;
+    /* Refined interface elements */
+    --border: 212 12% 22%;
+    --input: 212 12% 16%;
+    --ring: 150 30% 45%;
+    --radius: 0.75rem;
   }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes shimmer-slow {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+@keyframes ping-slow {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 4s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-pulse-slower {
+  animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-shimmer-slow {
+  animation: shimmer-slow 8s ease-in-out infinite;
+}
+
+.animate-ping-slow {
+  animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
 }

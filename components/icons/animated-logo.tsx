@@ -3,80 +3,71 @@ import { ComponentProps } from "react";
 export default function AnimatedLogo(props: ComponentProps<"svg">) {
   return (
     <svg
-      width="40"
-      height="40"
-      viewBox="0 0 40 40"
+      viewBox="0 0 32 32"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      {/* Chat bubble base */}
-      <path
-        d="M8 4C8 2.89543 8.89543 2 10 2H30C31.1046 2 32 2.89543 32 4V22C32 23.1046 31.1046 24 30 24H22L16 30L10 24H10C8.89543 24 8 23.1046 8 22V4Z"
-        fill="white"
-      >
+      {/* Background with subtle gradient */}
+      <defs>
+        <linearGradient id="logoGradient" x1="0" y1="0" x2="32" y2="32">
+          <stop offset="0%" stopColor="#000000" />
+          <stop offset="100%" stopColor="#1a1a1a" />
+        </linearGradient>
+      </defs>
+      <rect width="32" height="32" rx="8" fill="url(#logoGradient)">
         <animate
-          attributeName="d"
-          dur="2s"
-          repeatCount="indefinite"
-          values="
-            M8 4C8 2.89543 8.89543 2 10 2H30C31.1046 2 32 2.89543 32 4V22C32 23.1046 31.1046 24 30 24H22L16 30L10 24H10C8.89543 24 8 23.1046 8 22V4Z;
-            M6 6C6 4.89543 6.89543 4 8 4H32C33.1046 4 34 4.89543 34 6V24C34 25.1046 33.1046 26 32 26H24L18 32L12 26H8C6.89543 26 6 25.1046 6 24V6Z;
-            M8 4C8 2.89543 8.89543 2 10 2H30C31.1046 2 32 2.89543 32 4V22C32 23.1046 31.1046 24 30 24H22L16 30L10 24H10C8.89543 24 8 23.1046 8 22V4Z"
-        />
-      </path>
-
-      {/* AI Core Circle */}
-      <circle cx="20" cy="13" r="4" fill="black">
-        <animate
-          attributeName="r"
-          values="3;4;3"
-          dur="2s"
-          repeatCount="indefinite"
-        />
-      </circle>
-      <circle cx="20" cy="13" r="2" fill="white">
-        <animate
-          attributeName="r"
-          values="1.5;2;1.5"
-          dur="2s"
-          repeatCount="indefinite"
-        />
-      </circle>
-
-      {/* Building blocks */}
-      <rect
-        x="14"
-        y="18"
-        width="12"
-        height="4"
-        rx="1"
-        fill="white"
-        opacity="0.8"
-      >
-        <animate
-          attributeName="width"
-          values="0;12;12;0"
-          dur="2s"
+          attributeName="opacity"
+          values="0.95;1;0.95"
+          dur="3s"
           repeatCount="indefinite"
         />
       </rect>
 
-      <rect
-        x="14"
-        y="24"
-        width="8"
-        height="4"
-        rx="1"
-        fill="white"
-        opacity="0.6"
+      {/* Left Rectangle (C-shape) with smooth animation */}
+      <path
+        d="M7.5 8C7.5 7.44772 7.94772 7 8.5 7H13.5C14.0523 7 14.5 7.44772 14.5 8V9.5C14.5 9.5 11 9.5 11 12V20C11 22.5 14.5 22.5 14.5 22.5V24C14.5 24.5523 14.0523 25 13.5 25H8.5C7.94772 25 7.5 24.5523 7.5 24V8Z"
+        fill="#fff"
+        opacity="0.95"
       >
         <animate
-          attributeName="width"
-          values="0;8;8;0"
+          attributeName="d"
           dur="2s"
-          begin="0.3s"
+          repeatCount="1"
+          values="M7.5 16C7.5 16 7.5 16 8.5 16H13.5C14.5 16 14.5 16 14.5 16V16C14.5 16 11 16 11 16V16C11 16 14.5 16 14.5 16V16C14.5 16 14.5 16 13.5 16H8.5C7.5 16 7.5 16 7.5 16V16Z;
+                 M7.5 8C7.5 7.44772 7.94772 7 8.5 7H13.5C14.0523 7 14.5 7.44772 14.5 8V9.5C14.5 9.5 11 9.5 11 12V20C11 22.5 14.5 22.5 14.5 22.5V24C14.5 24.5523 14.0523 25 13.5 25H8.5C7.94772 25 7.5 24.5523 7.5 24V8Z"
+        />
+      </path>
+
+      {/* Right Rectangle with reveal animation */}
+      <rect
+        x="17.5"
+        y="8"
+        width="6"
+        height="12"
+        rx="1.5"
+        stroke="#fff"
+        strokeWidth="2"
+        opacity="0.85"
+      >
+        <animate
+          attributeName="height"
+          values="0;12"
+          dur="1s"
+          begin="0.5s"
+          fill="freeze"
+        />
+      </rect>
+
+      {/* Cursor with improved blinking */}
+      <rect x="17.5" y="23" width="6" height="2" rx="0.75" fill="#fff">
+        <animate
+          attributeName="opacity"
+          values="1;0;1"
+          dur="1.4s"
           repeatCount="indefinite"
+          keyTimes="0;0.5;1"
+          keySplines="0.4 0 0.6 1; 0.4 0 0.6 1"
         />
       </rect>
     </svg>
