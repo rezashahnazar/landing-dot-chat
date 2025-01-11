@@ -158,19 +158,9 @@ export async function getNextCompletionStreamPromise(
     throw new Error("Failed to get completion stream");
   }
 
-  // Create a text decoder stream to convert the bytes to text
-  const textDecoderStream = new TextDecoderStream();
-  const decodedStream = response.body.pipeThrough(textDecoderStream);
-
-  // Create a transform stream to convert the text chunks into a proper stream
-  const transformStream = new TransformStream({
-    transform(chunk, controller) {
-      controller.enqueue(chunk);
-    },
-  });
-
+  // Return the stream directly
   return {
-    streamPromise: Promise.resolve(decodedStream.pipeThrough(transformStream)),
+    streamPromise: Promise.resolve(response.body),
   };
 }
 
