@@ -27,6 +27,7 @@ export default function ChatMessages({
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [shouldAutoScroll, setShouldAutoScroll] = useState(false);
   const lastMessageRef = useRef<HTMLDivElement>(null);
+  const [isShowingCodeViewer, setIsShowingCodeViewer] = useState(false);
 
   // Auto-scroll when new messages are added
   useEffect(() => {

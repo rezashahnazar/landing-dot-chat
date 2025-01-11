@@ -12,7 +12,7 @@ export default function CodeRunner({
   code: string;
   onError?: (error: string) => void;
 }) {
-  return language === "tsx" ? (
+  return language === "tsx" || language === "jsx" ? (
     <div className="w-full h-full">
       {/* Container for maintaining RTL context */}
       <div dir="rtl" className="w-full h-full flex flex-col">

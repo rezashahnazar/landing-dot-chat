@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { startTransition, use, useEffect, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import ChatBox from "./chat-textarea";
-import ChatLog from "./chat-messages";
 import CodeViewer from "./code-viewer";
 import type { Chat } from "./page";
 import { Context } from "../../providers";
@@ -139,7 +138,6 @@ export default function ChatPage({ chat }: { chat: Chat }) {
                 activeTab={activeTab}
                 onTabChange={setActiveTab}
                 onClose={() => {
-                  setActiveMessage(undefined);
                   setIsShowingCodeViewer(false);
                 }}
               />
@@ -154,7 +152,6 @@ export default function ChatPage({ chat }: { chat: Chat }) {
           open={isShowingCodeViewer && isMobile}
           onOpenChange={(open: boolean) => {
             if (!open) {
-              setActiveMessage(undefined);
               setIsShowingCodeViewer(false);
             }
           }}
@@ -173,7 +170,6 @@ export default function ChatPage({ chat }: { chat: Chat }) {
                   activeTab={activeTab}
                   onTabChange={setActiveTab}
                   onClose={() => {
-                    setActiveMessage(undefined);
                     setIsShowingCodeViewer(false);
                   }}
                 />
@@ -207,8 +203,21 @@ export default function ChatPage({ chat }: { chat: Chat }) {
           activeMessage={activeMessage}
           streamText={streamText}
           onMessageClick={(message: Message) => {
-            setActiveMessage(message);
-            setIsShowingCodeViewer(true);
+            const parts = splitByFirstCodeFence(streamText);
+            const hasCodePart = parts.some(
+              (p) =>
+                p.type === "first-code-fence" ||
+                p.type === "first-code-fence-generating"
+            );
+
+            if (streamText && hasCodePart) {
+              // If we're streaming and there's code, just show the viewer
+              setIsShowingCodeViewer(true);
+            } else {
+              // Otherwise handle normal message click
+              setActiveMessage(message);
+              setIsShowingCodeViewer(true);
+            }
           }}
         />
 
