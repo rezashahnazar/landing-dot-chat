@@ -25,5 +25,3 @@ const getChatById = cache(async (id: string) => {
 
 export type Chat = NonNullable<Awaited<ReturnType<typeof getChatById>>>;
 export type Message = Chat["messages"][number];
-
-export const maxDuration = 45;

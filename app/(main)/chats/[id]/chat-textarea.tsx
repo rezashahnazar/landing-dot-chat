@@ -157,10 +157,7 @@ export default function ChatTextArea({
                   <Loader2 className="h-4 w-4 animate-spin" />
                 )}
                 {isStreaming && (
-                  <div
-                    className="size-4 rounded-[3px] bg-current opacity-90 
-                  ring-1 ring-inset ring-current/20 shadow-sm"
-                  />
+                  <div className="size-4 rounded-[3px] bg-current opacity-90" />
                 )}
                 {!isPending && !isStreaming && (
                   <ArrowLeft
@@ -174,22 +171,6 @@ export default function ChatTextArea({
               </span>
             </Button>
           </div>
-
-          {isStreaming && (
-            <div
-              className="absolute left-[calc(50%+90px)] top-1/2 -translate-y-1/2
-              flex items-center gap-1.5 text-[10px] font-medium tracking-wide 
-              text-primary/60 animate-slide-right whitespace-nowrap pointer-events-none"
-            >
-              <span>برای توقف</span>
-              <kbd
-                className="rounded bg-primary/10 px-1.5 py-0.5 
-                ring-1 ring-primary/20 shadow-sm"
-              >
-                space
-              </kbd>
-            </div>
-          )}
         </form>
       </div>
     </div>

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import PlausibleProvider from "next-plausible";
 import { IRANYekan } from "@/fonts/local-fonts";
 import "./globals.css";
 
@@ -26,14 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="fa"
-      dir="rtl"
-      className={`${IRANYekan.variable} dark antialiased`}
-    >
-      <head>
-        <PlausibleProvider domain="landing.chat" />
-      </head>
+    <html lang="fa" dir="rtl" className="dark antialiased">
       <body
         className={`${IRANYekan.className} flex min-h-[100dvh] flex-col bg-background text-foreground dark antialiased`}
       >

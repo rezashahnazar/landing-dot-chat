@@ -21,7 +21,7 @@ interface ChatMessage {
 
 // Constants
 const CHAT_TITLE_MODEL = "anthropic/claude-3.5-sonnet";
-const MAX_TOKENS = 6000;
+// const MAX_TOKENS = 6000;
 const TEMPERATURE = 0.2;
 
 // Chat Creation
@@ -32,10 +32,9 @@ export async function createChat(
   shadcn: boolean
 ): Promise<StreamResponse> {
   const title = await generateChatTitle(prompt);
-  const systemPrompt =
-    quality === "high"
-      ? getHighQualitySystemPrompt(shadcn)
-      : getSystemPrompt(shadcn);
+  const systemPrompt = await (quality === "high"
+    ? getHighQualitySystemPrompt(shadcn)
+    : getSystemPrompt(shadcn));
 
   const chat = await createChatInDatabase({
     model,
@@ -46,7 +45,7 @@ export async function createChat(
     systemPrompt,
   });
 
-  const lastMessage = getLastMessage(chat);
+  const lastMessage = await getLastMessage(chat);
   if (!lastMessage) throw new Error("No new message");
 
   return { chatId: chat.id, lastMessageId: lastMessage.id };
@@ -192,18 +191,18 @@ async function createCompletionStream(model: string, messages: ChatMessage[]) {
     model: openrouter(model),
     messages: messages.map((m) => ({ role: m.role, content: m.content })),
     temperature: TEMPERATURE,
-    maxTokens: MAX_TOKENS,
+    // maxTokens: MAX_TOKENS,
   });
 }
 
 // Helper Functions
-function getLastMessage(
+async function getLastMessage(
   chat: Chat & { messages: Message[] }
-): Message | undefined {
+): Promise<Message | undefined> {
   return chat.messages.sort((a, b) => a.position - b.position).at(-1);
 }
 
-function getHighQualitySystemPrompt(shadcn: boolean): string {
+async function getHighQualitySystemPrompt(shadcn: boolean): Promise<string> {
   return dedent`
     You are an expert software architect and UI/UX designer specializing in Persian interfaces.
     When responding, you MUST:
@@ -230,7 +229,7 @@ function getHighQualitySystemPrompt(shadcn: boolean): string {
   `;
 }
 
-function getSystemPrompt(shadcn: boolean): string {
+async function getSystemPrompt(shadcn: boolean): Promise<string> {
   let systemPrompt = dedent`
     You are an expert frontend React engineer specializing in RTL interfaces and modern Persian web design. Follow these guidelines carefully:
 

@@ -161,7 +161,7 @@ export default function ChatPage({ chat }: { chat: Chat }) {
         >
           <Drawer.Portal>
             <Drawer.Overlay className="fixed inset-0 bg-black/40" />
-            <Drawer.Content className="fixed inset-x-0 bottom-0 mt-24 h-[90vh] rounded-t-2xl bg-gradient-to-[165deg] from-white/[0.02] to-white/[0.01] backdrop-blur-2xl border border-white/[0.03] shadow-[0_8px_24px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.04)] flex flex-col z-[100]">
+            <Drawer.Content className="fixed inset-x-0 bottom-0 mt-24 max-h-[80dvh] rounded-t-2xl bg-gradient-to-[165deg] from-white/[0.02] to-white/[0.01] backdrop-blur-2xl border border-white/[0.03] shadow-[0_8px_24px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.04)] flex flex-col z-[100]">
               <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 dark:bg-zinc-700 my-3" />
               <Drawer.Title className="sr-only">مشاهده کد</Drawer.Title>
               <div className="flex-1 overflow-hidden">

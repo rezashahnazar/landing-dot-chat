@@ -4,14 +4,11 @@ import { useRouter } from "next/navigation";
 import { startTransition, use, useState, useRef } from "react";
 import { useFormStatus } from "react-dom";
 import assert from "assert";
-import * as Select from "@radix-ui/react-select";
-import { CheckIcon, ChevronDownIcon, Sparkles } from "lucide-react";
 import TextareaAutosize from "react-textarea-autosize";
 import AnimatedLogo from "@/components/icons/animated-logo";
 
 import { Context } from "./providers";
 import { createChat, getNextCompletionStreamPromise } from "./actions";
-import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -219,7 +216,7 @@ export default function Home() {
 
   const handleSuggestionClick = (suggestion: string) => {
     let currentText = "";
-    const typingSpeed = 20; // milliseconds per character
+    const typingSpeed = 10; // milliseconds per character
     const characters = suggestion.split("");
 
     // Reset the prompt first and start typing animation

@@ -59,5 +59,3 @@ export default async function SharePage(props: Props) {
 
   return <SharePageClient message={message} />;
 }
-
-export const maxDuration = 45;
