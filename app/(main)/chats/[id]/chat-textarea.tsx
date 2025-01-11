@@ -66,8 +66,8 @@ export default function ChatTextArea({
   }, [isStreaming, onStopStream]);
 
   return (
-    <div className="sticky bottom-0 w-full bg-gradient-to-t from-background via-background to-transparent px-3 pb-6">
-      <div className="relative mx-auto w-full max-w-3xl px-4">
+    <div className="sticky bottom-0 w-full bg-gradient-to-t from-background via-background to-transparent px-3 pb-4">
+      <div className="relative mx-auto w-full max-w-3xl">
         <form
           className={cn(
             "flex min-h-[64px] items-center rounded-xl bg-white/[0.02]",

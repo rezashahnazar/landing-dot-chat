@@ -48,6 +48,7 @@ export default function ChatMessages({
     }
   }, [chat.messages.length]);
 
+  // Auto-scroll when streaming text after code
   useEffect(() => {
     if (!streamText || !lastMessageRef.current || !scrollRef.current) return;
 
@@ -59,14 +60,32 @@ export default function ChatMessages({
     // 1. User is already near bottom (within 100px)
     // 2. Stream just started (streamText.length === 1)
     // 3. shouldAutoScroll is true (set when user was near bottom when stream started)
+    // 4. There is after-code text being streamed
+    const parts = splitByFirstCodeFence(streamText);
+    const hasAfterCodeText = parts.some(
+      (part, index) =>
+        index >
+          parts.findIndex(
+            (p) =>
+              p.type === "first-code-fence" ||
+              p.type === "first-code-fence-generating"
+          ) && part.type === "text"
+    );
+
     if (
-      distanceFromBottom < 100 ||
-      streamText.length === 1 ||
-      shouldAutoScroll
+      (distanceFromBottom < 100 ||
+        streamText.length === 1 ||
+        shouldAutoScroll) &&
+      hasAfterCodeText
     ) {
       // Use requestAnimationFrame to ensure DOM is updated
       requestAnimationFrame(() => {
-        lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+        if (lastMessageRef.current) {
+          lastMessageRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "end",
+          });
+        }
       });
     }
   }, [streamText, shouldAutoScroll]);
@@ -405,7 +424,7 @@ function AssistantMessage({
                   : ""}
               </Markdown>
             </div>
-            <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-background/80 to-transparent pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-background/80 to-transparent" />
           </div>
         </div>
       )}
