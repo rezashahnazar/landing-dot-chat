@@ -142,7 +142,11 @@ export async function getNextCompletionStreamPromise(
 ) {
   const messages = await getMessagesForCompletion(messageId);
 
-  const response = await fetch("/api/chat", {
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
+  const response = await fetch(`${baseUrl}/api/chat`, {
     method: "POST",
     body: JSON.stringify({ messages, model }),
     headers: {
@@ -154,8 +158,19 @@ export async function getNextCompletionStreamPromise(
     throw new Error("Failed to get completion stream");
   }
 
+  // Create a text decoder stream to convert the bytes to text
+  const textDecoderStream = new TextDecoderStream();
+  const decodedStream = response.body.pipeThrough(textDecoderStream);
+
+  // Create a transform stream to convert the text chunks into a proper stream
+  const transformStream = new TransformStream({
+    transform(chunk, controller) {
+      controller.enqueue(chunk);
+    },
+  });
+
   return {
-    streamPromise: Promise.resolve(response.body as ReadableStream),
+    streamPromise: Promise.resolve(decodedStream.pipeThrough(transformStream)),
   };
 }
 
