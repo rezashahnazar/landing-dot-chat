@@ -150,12 +150,12 @@ export async function getNextCompletionStreamPromise(
     },
   });
 
-  if (!response.ok) {
+  if (!response.ok || !response.body) {
     throw new Error("Failed to get completion stream");
   }
 
   return {
-    streamPromise: Promise.resolve(response.body),
+    streamPromise: Promise.resolve(response.body as ReadableStream),
   };
 }
 

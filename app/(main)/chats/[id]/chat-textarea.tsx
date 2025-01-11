@@ -16,7 +16,7 @@ export default function ChatTextArea({
   onStopStream,
 }: {
   chat: Chat;
-  onNewStreamPromise: (v: Promise<ReadableStream>) => void;
+  onNewStreamPromise: (v: Promise<ReadableStream<any>>) => void;
   isStreaming: boolean;
   onStopStream: () => void;
 }) {
@@ -79,15 +79,20 @@ export default function ChatTextArea({
           )}
           action={async (formData) => {
             startTransition(async () => {
-              const prompt = formData.get("prompt");
-              assert.ok(typeof prompt === "string");
-              const message = await createMessage(chat.id, prompt, "user");
-              const { streamPromise } = await getNextCompletionStreamPromise(
-                message.id,
-                chat.model
-              );
-              onNewStreamPromise(streamPromise);
-              router.refresh();
+              try {
+                const prompt = formData.get("prompt");
+                assert.ok(typeof prompt === "string");
+                const message = await createMessage(chat.id, prompt, "user");
+                const { streamPromise } = await getNextCompletionStreamPromise(
+                  message.id,
+                  chat.model
+                );
+                onNewStreamPromise(streamPromise);
+                router.refresh();
+              } catch (error) {
+                console.error("Error in chat submission:", error);
+                // You might want to show an error toast here
+              }
             });
           }}
         >
