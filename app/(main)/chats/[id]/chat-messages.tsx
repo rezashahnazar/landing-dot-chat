@@ -151,12 +151,12 @@ export default function ChatMessages({
     <div className="flex-1 overflow-hidden relative w-full h-full">
       <div
         ref={scrollRef}
-        className="mx-auto flex w-full max-w-3xl flex-col pt-4 pb-2 px-2 lg:px-0 overflow-y-auto overflow-x-hidden h-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        className="mx-auto flex w-full max-w-3xl flex-col pt-4 pb-2 px-4 overflow-y-auto overflow-x-hidden h-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
       >
         <UserMessage content={chat.prompt} />
 
         {chat.messages.slice(2).map((message) => (
-          <div key={message.id} className="w-full px-2">
+          <div key={message.id} className="w-full">
             {message.role === "user" ? (
               <UserMessage content={message.content} />
             ) : (
