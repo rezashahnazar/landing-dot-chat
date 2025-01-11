@@ -136,29 +136,14 @@ export async function createMessage(
 }
 
 // Stream Generation
+export const runtime = "edge";
+
 export async function getNextCompletionStreamPromise(
   messageId: string,
   model: string
 ) {
   const messages = await getMessagesForCompletion(messageId);
-  const stream = await createCompletionStream(model, messages);
-
-  return {
-    streamPromise: Promise.resolve(
-      new ReadableStream({
-        async start(controller) {
-          try {
-            for await (const chunk of stream.textStream) {
-              controller.enqueue(chunk);
-            }
-            controller.close();
-          } catch (error) {
-            controller.error(error);
-          }
-        },
-      })
-    ),
-  };
+  return createCompletionStream(model, messages);
 }
 
 async function getMessagesForCompletion(
@@ -185,13 +170,13 @@ async function getMessagesForCompletion(
 async function createCompletionStream(model: string, messages: ChatMessage[]) {
   const openrouter = createOpenRouter({
     apiKey: process.env.OPENROUTER_API_KEY!,
+    baseUrl: "https://openrouter.ai/api/v1",
   });
 
   return streamText({
     model: openrouter(model),
-    messages: messages.map((m) => ({ role: m.role, content: m.content })),
+    messages,
     temperature: TEMPERATURE,
-    // maxTokens: MAX_TOKENS,
   });
 }
 
