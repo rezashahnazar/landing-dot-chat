@@ -107,7 +107,7 @@ function PromptTextarea({
           <div className="flex-1 relative">
             <TextareaAutosize
               ref={inputRef}
-              placeholder="مثلاً: یه تجربه باحال برای معرفی محصول جدیدمون می‌خوام..."
+              placeholder="مثلاً: یه گیمیفیکیشن جذاب برای معرفی محصول جدیدمون می‌خوام..."
               required
               name="prompt"
               rows={1}
@@ -116,7 +116,7 @@ function PromptTextarea({
               spellCheck="false"
               dir="rtl"
               className="block w-full resize-none border-0 bg-transparent 
-                px-5 pt-4 pb-4 text-base leading-relaxed
+                px-5 pt-4 pb-4 text-sm sm:text-base leading-relaxed
                 placeholder:text-muted-foreground/40
                 focus-visible:outline-none disabled:cursor-not-allowed 
                 disabled:opacity-50
@@ -352,7 +352,7 @@ export default function Home() {
                   >
                     {prompt.title}
                   </h3>
-                  <p className="text-xs text-muted-foreground/80 line-clamp-2 transition-colors duration-500 group-hover:text-muted-foreground/90">
+                  <p className="text-xs text-muted-foreground/80 line-clamp-2 transition-colors duration-500 group-hover:text-muted-foreground/90 font-light">
                     {prompt.description}
                   </p>
                 </div>
