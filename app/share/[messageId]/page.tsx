@@ -1,16 +1,15 @@
-import CodeRunner from "@/components/code-runner";
-import client from "@/lib/prisma";
-import { extractFirstCodeBlock } from "@/lib/utils";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import client from "@/lib/prisma";
 import { cache } from "react";
+import SharePageClient from "./share-page-client";
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ messageId: string }>;
+  params: { messageId: string };
 }): Promise<Metadata> {
-  let { messageId } = await params;
+  const { messageId } = params;
   const message = await getMessage(messageId);
   if (!message) {
     notFound();
@@ -34,30 +33,6 @@ export async function generateMetadata({
   };
 }
 
-export default async function SharePage({
-  params,
-}: {
-  params: Promise<{ messageId: string }>;
-}) {
-  const { messageId } = await params;
-
-  const message = await client.message.findUnique({ where: { id: messageId } });
-  if (!message) {
-    notFound();
-  }
-
-  const app = extractFirstCodeBlock(message.content);
-  if (!app || !app.language) {
-    notFound();
-  }
-
-  return (
-    <div className="flex min-h-screen w-full grow items-center justify-center">
-      <CodeRunner language={app.language} code={app.code} />
-    </div>
-  );
-}
-
 const getMessage = cache(async (messageId: string) => {
   return client.message.findUnique({
     where: {
@@ -68,3 +43,18 @@ const getMessage = cache(async (messageId: string) => {
     },
   });
 });
+
+export default async function SharePage({
+  params,
+}: {
+  params: { messageId: string };
+}) {
+  const { messageId } = params;
+
+  const message = await client.message.findUnique({ where: { id: messageId } });
+  if (!message) {
+    notFound();
+  }
+
+  return <SharePageClient message={message} />;
+}

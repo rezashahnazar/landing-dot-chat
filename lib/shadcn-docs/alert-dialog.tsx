@@ -17,7 +17,7 @@ import {
 export const usageDocs = `
 <AlertDialog>
   <AlertDialogTrigger>Open</AlertDialogTrigger>
-  <AlertDialogContent>
+  <AlertDialogContent aria-describedby={undefined}>
     <AlertDialogHeader>
       <AlertDialogTitle>Are you sure?</AlertDialogTitle>
       <AlertDialogDescription>

@@ -30,6 +30,7 @@ export default function SyntaxHighlighter({
   return (
     <div
       className="p-4 text-sm whitespace-pre w-full"
+      dir="ltr"
       dangerouslySetInnerHTML={{ __html: codeHtml }}
     />
   );

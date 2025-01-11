@@ -1,18 +1,25 @@
+"use client";
+
 import CodeRunnerReact from "./code-runner-react";
+import { CodeRunnerErrorBoundary } from "./code-runner-error-boundary";
 
 export default function CodeRunner({
   language,
   code,
+  onError,
 }: {
   language: string;
   code: string;
+  onError?: (error: string) => void;
 }) {
   return language === "tsx" ? (
     <div className="w-full h-full">
       {/* Container for maintaining RTL context */}
       <div dir="rtl" className="w-full h-full flex flex-col">
         <div dir="rtl" className="preview-content min-h-[100dvh]">
-          <CodeRunnerReact code={code} />
+          <CodeRunnerErrorBoundary onError={onError}>
+            <CodeRunnerReact code={code} />
+          </CodeRunnerErrorBoundary>
         </div>
       </div>
     </div>

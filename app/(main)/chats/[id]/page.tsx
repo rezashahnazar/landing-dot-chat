@@ -1,5 +1,5 @@
 import client from "@/lib/prisma";
-import PageClient from "./page.client";
+import ChatPage from "./chat-page";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
@@ -13,7 +13,7 @@ export default async function Page({
 
   if (!chat) notFound();
 
-  return <PageClient chat={chat} />;
+  return <ChatPage chat={chat} />;
 }
 
 const getChatById = cache(async (id: string) => {

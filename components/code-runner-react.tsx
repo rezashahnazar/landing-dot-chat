@@ -4,10 +4,65 @@ import * as shadcnComponents from "@/lib/shadcn";
 import {
   SandpackPreview,
   SandpackProvider,
+  useSandpack,
 } from "@codesandbox/sandpack-react/unstyled";
+import { Button } from "@/components/ui/button";
 import dedent from "dedent";
+import { useEffect } from "react";
 
-export default function ReactCodeRunner({ code }: { code: string }) {
+const ErrorListener = ({ onError }: { onError?: (error: string) => void }) => {
+  const { sandpack } = useSandpack();
+  const errorMessage =
+    sandpack.error?.message || sandpack.error?.toString() || "";
+
+  useEffect(() => {
+    if (sandpack.error && onError) {
+      const textArea = document.querySelector("textarea");
+      if (textArea) {
+        textArea.value = `این کد با خطای زیر مواجه شد. لطفاً آن را اصلاح کنید:\n\n${errorMessage}`;
+        textArea.focus();
+      }
+    }
+  }, [sandpack.error, onError, errorMessage]);
+
+  if (sandpack.error) {
+    return (
+      <div className="absolute inset-0 flex items-center justify-center bg-destructive/5 backdrop-blur-sm">
+        <div className="flex flex-col gap-4 p-4 text-center max-w-md">
+          <h2 className="text-lg font-semibold text-destructive">
+            خطا در اجرای کد
+          </h2>
+          <p className="text-sm text-destructive/90 font-mono whitespace-pre-wrap">
+            {errorMessage}
+          </p>
+          <Button
+            variant="outline"
+            className="mt-2"
+            onClick={() => {
+              const textArea = document.querySelector("textarea");
+              if (textArea) {
+                textArea.value = `این کد با خطای زیر مواجه شد. لطفاً آن را اصلاح کنید:\n\n${errorMessage}`;
+                textArea.focus();
+              }
+            }}
+          >
+            کپی خطا و درخواست رفع مشکل
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+};
+
+export default function ReactCodeRunner({
+  code,
+  onError,
+}: {
+  code: string;
+  onError?: (error: string) => void;
+}) {
   return (
     <SandpackProvider
       key={code}
@@ -39,19 +94,25 @@ export default function ReactCodeRunner({ code }: { code: string }) {
         externalResources: [
           "https://unpkg.com/@tailwindcss/ui/dist/tailwind-ui.min.css",
         ],
+        recompileMode: "delayed",
+        recompileDelay: 300,
       }}
       customSetup={{
         dependencies,
       }}
     >
-      <SandpackPreview
-        showNavigator={false}
-        showOpenInCodeSandbox={false}
-        showRefreshButton={false}
-        showRestartButton={false}
-        showOpenNewtab={false}
-        className="h-full w-full overflow-x-auto"
-      />
+      <div className="relative h-full w-full">
+        <ErrorListener onError={onError} />
+        <SandpackPreview
+          showNavigator={false}
+          showOpenInCodeSandbox={false}
+          showRefreshButton={false}
+          showRestartButton={false}
+          showOpenNewtab={false}
+          className="h-full w-full overflow-x-auto"
+          actionsChildren={<></>}
+        />
+      </div>
     </SandpackProvider>
   );
 }

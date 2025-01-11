@@ -14,8 +14,8 @@
     --popover: 212 12% 16%;
     --popover-foreground: 0 0% 99%;
     
-    /* Refined green for primary actions */
-    --primary: 150 35% 45%;
+    /* Elegant indigo-violet for primary actions */
+    --primary: 250 47% 55%;
     --primary-foreground: 0 0% 100%;
     
     /* Sophisticated neutral for secondary elements */
@@ -26,8 +26,8 @@
     --muted: 212 8% 20%;
     --muted-foreground: 215 8% 65%;
     
-    /* Complementary green accent */
-    --accent: 150 25% 40%;
+    /* Complementary accent */
+    --accent: 250 40% 50%;
     --accent-foreground: 0 0% 100%;
     
     /* High-contrast system indicators */
@@ -37,7 +37,7 @@
     /* Refined interface elements */
     --border: 212 12% 22%;
     --input: 212 12% 16%;
-    --ring: 150 30% 45%;
+    --ring: 250 45% 55%;
     --radius: 0.75rem;
   }
 }

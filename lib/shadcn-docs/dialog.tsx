@@ -14,7 +14,8 @@ import {
 export const usageDocs = `
 <Dialog>
   <DialogTrigger>Open</DialogTrigger>
-  <DialogContent>
+  <DialogContent aria-describedby={undefined}>
+    <DialogTitle>Dialog Title</DialogTitle>
     <DialogHeader>
       <DialogTitle>Dialog Title</DialogTitle>
       <DialogDescription>

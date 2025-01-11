@@ -7,6 +7,7 @@ import assert from "assert";
 import * as Select from "@radix-ui/react-select";
 import { CheckIcon, ChevronDownIcon, Sparkles } from "lucide-react";
 import TextareaAutosize from "react-textarea-autosize";
+import AnimatedLogo from "@/components/icons/animated-logo";
 
 import { Context } from "./providers";
 import { createChat, getNextCompletionStreamPromise } from "./actions";
@@ -58,10 +59,12 @@ function PromptTextarea({
   value,
   onChange,
   inputRef,
+  isTyping,
 }: {
   value: string;
   onChange: (value: string) => void;
   inputRef?: React.RefObject<HTMLTextAreaElement>;
+  isTyping?: boolean;
 }) {
   const { pending } = useFormStatus();
   const isEmpty = !value.trim();
@@ -70,10 +73,19 @@ function PromptTextarea({
     <div className="relative isolate group">
       {/* Unified ambient glow */}
       <div
-        className="absolute -inset-[2px] rounded-3xl opacity-0 group-hover:opacity-100 
-        group-focus-within:opacity-100 transition-all duration-1000"
+        className={cn(
+          "absolute -inset-[2px] rounded-3xl transition-all duration-1000",
+          isTyping
+            ? "opacity-100"
+            : "opacity-0 group-hover:opacity-100 group-focus-within:opacity-100"
+        )}
       >
-        <div className="absolute inset-0 bg-primary/20 blur-2xl" />
+        <div
+          className={cn(
+            "absolute inset-0 blur-2xl transition-all duration-700",
+            isTyping ? "bg-primary/30 animate-pulse-fast" : "bg-primary/20"
+          )}
+        />
       </div>
 
       {/* Main container */}
@@ -104,7 +116,7 @@ function PromptTextarea({
               spellCheck="false"
               dir="rtl"
               className="block w-full resize-none border-0 bg-transparent 
-                px-5 pt-5 pb-10 text-base leading-relaxed
+                px-5 pt-4 pb-4 text-base leading-relaxed
                 placeholder:text-muted-foreground/40
                 focus-visible:outline-none disabled:cursor-not-allowed 
                 disabled:opacity-50
@@ -182,7 +194,7 @@ function PromptTextarea({
                         شروع ساخت
                       </span>
                       <span className="text-sm transition-transform duration-300 group-hover/btn:translate-x-0.5">
-                        →
+                        ←
                       </span>
                     </div>
                   )}
@@ -203,60 +215,71 @@ export default function Home() {
 
   const [prompt, setPrompt] = useState("");
   const [model] = useState(MODELS[0].value);
+  const [isTyping, setIsTyping] = useState(false);
 
   const handleSuggestionClick = (suggestion: string) => {
-    setPrompt(suggestion);
-    setTimeout(() => {
-      textareaRef.current?.focus();
-    }, 0);
+    let currentText = "";
+    const typingSpeed = 20; // milliseconds per character
+    const characters = suggestion.split("");
+
+    // Reset the prompt first and start typing animation
+    setPrompt("");
+    setIsTyping(true);
+
+    // Animate each character
+    characters.forEach((char, index) => {
+      setTimeout(() => {
+        currentText += char;
+        setPrompt(currentText);
+
+        // Focus the textarea after the animation starts
+        if (index === 0) {
+          textareaRef.current?.focus();
+        }
+
+        // Stop typing animation when done
+        if (index === characters.length - 1) {
+          setTimeout(() => setIsTyping(false), 100);
+        }
+      }, index * typingSpeed);
+    });
   };
 
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-t from-background/90 to-background/95 relative overflow-hidden">
-      {/* Ambient background effect - optimized for mobile */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,rgba(var(--primary-rgb),0.05),transparent_50%)] animate-pulse-slow opacity-70 md:opacity-100" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(var(--primary-rgb),0.03),transparent_50%)] animate-pulse-slower opacity-70 md:opacity-100" />
+      {/* Ambient background effect - refined for depth */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,rgba(var(--primary-rgb),0.07),transparent_50%)] animate-pulse-slow opacity-70 md:opacity-100 backdrop-blur-3xl" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(var(--primary-rgb),0.05),transparent_50%)] animate-pulse-slower opacity-70 md:opacity-100" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_60%,rgba(var(--primary-rgb),0.03),transparent_40%)] animate-pulse-slow opacity-0 md:opacity-100" />
 
       <div className="container relative mx-auto max-w-5xl px-3 py-6 md:px-4 md:py-16 lg:py-24">
         <div className="flex flex-col items-center justify-center space-y-10 md:space-y-16">
           <div className="flex flex-col items-center space-y-6 md:space-y-10 text-center">
-            <div
-              className="glass inline-flex items-center rounded-full bg-primary/20 px-4 py-1.5 md:px-5 md:py-2 text-sm font-medium 
-              text-primary/90 shadow-sm transition-all duration-700 hover:bg-primary/10 hover:shadow-md 
-              hover:scale-105 hover:-translate-y-1 hover:shadow-primary/5 animate-float touch-none"
-            >
-              <Sparkles className="me-2 h-3.5 w-3.5 md:h-4 md:w-4 animate-pulse" />
-              جادوی هوش مصنوعی ✨
+            <div className="scale-in group">
+              <div className="flex sm:flex-row flex-col-reverse items-center gap-4 md:gap-6 ">
+                <span
+                  dir="ltr"
+                  className="translate-y-1 tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-white via-white/80 to-white/60 hover:from-white/90 hover:via-white/70 hover:to-white/50 transition-all duration-700 transform"
+                >
+                  <span className="inline-flex items-center">
+                    <span className="text-3xl md:text-4xl lg:text-5xl font-bold text-white/80 italic hover:text-white transition-colors duration-700">
+                      Landing
+                    </span>
+                    <span className="h-2 w-2 md:h-2.5 md:w-2.5 bg-white/80 rounded-full mx-3 animate-[pulse_1.4s_ease-in-out_infinite]"></span>
+                    <span className="text-2xl md:text-3xl lg:text-4xl font-light text-white/80 animate-[pulse_1.4s_ease-in-out_infinite]">
+                      Chat
+                    </span>
+                  </span>
+                </span>
+                <AnimatedLogo className="size-12 md:size-14 lg:size-16 transform transition-all duration-700" />
+              </div>
             </div>
 
-            <h1
-              className="text-balance bg-gradient-to-b from-foreground to-foreground/80 bg-clip-text text-3xl 
-              font-bold tracking-tight text-transparent md:text-5xl lg:text-6xl relative group px-2"
-            >
-              بیا{" "}
-              <span className="relative inline-block transition-transform duration-700 hover:scale-105">
-                <span
-                  className="absolute -inset-2 block rounded-lg bg-primary/10 blur-2xl 
-                  group-hover:bg-primary/15 transition-all duration-700 animate-glow"
-                ></span>
-                <span
-                  className="relative bg-gradient-to-br from-primary via-primary/90 to-primary/80 
-                  bg-clip-text text-transparent transition-all duration-700 group-hover:from-primary/90 group-hover:to-primary"
-                >
-                  خلاق
-                </span>
-              </span>{" "}
-              باشیم!
-            </h1>
-
             <p
-              className="max-w-[42rem] text-sm md:text-base text-muted-foreground/90 leading-relaxed md:leading-8 
-              backdrop-blur-sm px-4 py-2.5 md:px-6 md:py-3 rounded-xl md:rounded-2xl bg-background/30 shadow-lg md:shadow-xl
-              border border-white/5 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5
-              hover:border-primary/10 hover:-translate-y-0.5 mx-3 md:mx-0"
+              className="max-w-xl text-sm md:text-base text-muted-foreground/80 
+            bg-background/30 backdrop-blur-sm rounded-xl px-4 py-1"
             >
-              فقط کافیه ایده‌ت رو بگی! ما با هوش مصنوعی اون رو به یه تجربه
-              تعاملی باحال تبدیل می‌کنیم که مخاطب‌هات عاشقش بشن 💫
+              ایده‌هاتو بنویس و با هوش مصنوعی لندینگ بساز!
             </p>
           </div>
 
@@ -286,6 +309,7 @@ export default function Home() {
               value={prompt}
               onChange={setPrompt}
               inputRef={textareaRef}
+              isTyping={isTyping}
             />
           </form>
 
@@ -328,7 +352,7 @@ export default function Home() {
                   >
                     {prompt.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground/80 line-clamp-3 transition-colors duration-500 group-hover:text-muted-foreground/90">
+                  <p className="text-xs text-muted-foreground/80 line-clamp-2 transition-colors duration-500 group-hover:text-muted-foreground/90">
                     {prompt.description}
                   </p>
                 </div>

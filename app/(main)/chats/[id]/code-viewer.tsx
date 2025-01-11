@@ -135,7 +135,7 @@ export default function CodeViewer({
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="text-foreground/60 hover:text-foreground/90 rounded-xl"
+            className="lg:flex hidden text-foreground/60 hover:text-foreground/90 rounded-xl"
           >
             <X className="h-4 w-4" />
             <span className="sr-only">بستن</span>
@@ -198,6 +198,13 @@ export default function CodeViewer({
                           language={language}
                           code={code}
                           key={refresh}
+                          onError={(error) => {
+                            const textArea = document.querySelector("textarea");
+                            if (textArea) {
+                              textArea.value = `این کد با خطای زیر مواجه شد. لطفاً آن را اصلاح کنید:\n\n${error}`;
+                              textArea.focus();
+                            }
+                          }}
                         />
                       </div>
                     )}
@@ -207,8 +214,8 @@ export default function CodeViewer({
             )}
           </div>
         ) : (
-          <div className="flex h-full flex-col">
-            <div className="h-1/2 overflow-y-auto">
+          <div className="flex h-full flex-col lg:flex-row">
+            <div className="h-1/2 lg:h-full lg:w-1/2 overflow-y-auto">
               <div
                 ref={codeScrollRef}
                 className="relative h-full overflow-auto"
@@ -216,15 +223,26 @@ export default function CodeViewer({
                 <SyntaxHighlighter code={code} language={language} />
               </div>
             </div>
-            <div className="flex h-1/2 flex-col">
-              <div className="glass-panel border-t px-4 py-3 text-sm font-medium">
+            <div className="flex h-1/2 lg:h-full lg:w-1/2 flex-col">
+              <div className="glass-panel border-t lg:border-t-0 lg:border-l px-4 py-3 text-sm font-medium">
                 خروجی
               </div>
               <div className="flex grow items-center justify-center glass-panel">
                 {streamAppIsGenerating ? (
                   <PreviewSkeleton />
                 ) : (
-                  <CodeRunner language={language} code={code} key={refresh} />
+                  <CodeRunner
+                    language={language}
+                    code={code}
+                    key={refresh}
+                    onError={(error) => {
+                      const textArea = document.querySelector("textarea");
+                      if (textArea) {
+                        textArea.value = `این کد با خطای زیر مواجه شد. لطفاً آن را اصلاح کنید:\n\n${error}`;
+                        textArea.focus();
+                      }
+                    }}
+                  />
                 )}
               </div>
             </div>
@@ -278,7 +296,10 @@ export default function CodeViewer({
       </div>
 
       <Dialog open={showShareDialog} onOpenChange={setShowShareDialog}>
-        <DialogContent className="glass-panel sm:max-w-md">
+        <DialogContent
+          aria-describedby={undefined}
+          className="glass-panel sm:max-w-md"
+        >
           <DialogHeader>
             <DialogTitle>اشتراک‌گذاری کد</DialogTitle>
           </DialogHeader>

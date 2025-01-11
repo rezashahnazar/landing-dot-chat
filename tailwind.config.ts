@@ -229,15 +229,23 @@ const config = {
             transform: "translateY(0)",
           },
           "50%": {
-            transform: "translateY(-6px)",
+            transform: "translateY(-10px)",
           },
         },
         glow: {
+          "0%": {
+            opacity: "0",
+          },
+          "100%": {
+            opacity: "1",
+          },
+        },
+        "pulse-fast": {
           "0%, 100%": {
             opacity: "1",
           },
           "50%": {
-            opacity: "0.6",
+            opacity: "0.7",
           },
         },
       },
@@ -256,8 +264,9 @@ const config = {
         "subtle-fade":
           "subtle-fade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards",
         "scale-in": "scale-in 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.1)",
-        float: "float 4s ease-in-out infinite",
-        glow: "glow 3s ease-in-out infinite",
+        float: "float 3s ease-in-out infinite",
+        glow: "glow 2s ease-in-out infinite alternate",
+        "pulse-fast": "pulse-fast 1s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
     },
   },
