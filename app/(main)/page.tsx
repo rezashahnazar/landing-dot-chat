@@ -226,6 +226,12 @@ export default function Home() {
     setPrompt("");
     setIsTyping(true);
 
+    // Scroll textarea into view smoothly
+    textareaRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+
     // Animate each character
     characters.forEach((char, index) => {
       setTimeout(() => {
