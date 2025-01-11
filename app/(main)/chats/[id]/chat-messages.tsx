@@ -38,9 +38,11 @@ export default function ChatMessages({
 
     // Auto-scroll if user is already near the bottom (within 100px) or if this is a new message
     if (distanceFromBottom < 100 || chat.messages.length === 2) {
-      scrollElement.scrollTo({
-        top: scrollElement.scrollHeight,
-        behavior: "smooth",
+      requestAnimationFrame(() => {
+        scrollElement.scrollTo({
+          top: scrollElement.scrollHeight,
+          behavior: "smooth",
+        });
       });
       setShouldAutoScroll(true);
     }
@@ -53,13 +55,16 @@ export default function ChatMessages({
     const { scrollTop, scrollHeight, clientHeight } = scrollElement;
     const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
 
-    // Always scroll when stream starts (streamText was empty and now has content)
-    // Or when already near bottom or after a new user message
+    // Only auto-scroll when:
+    // 1. User is already near bottom (within 100px)
+    // 2. Stream just started (streamText.length === 1)
+    // 3. shouldAutoScroll is true (set when user was near bottom when stream started)
     if (
       distanceFromBottom < 100 ||
       streamText.length === 1 ||
       shouldAutoScroll
     ) {
+      // Use requestAnimationFrame to ensure DOM is updated
       requestAnimationFrame(() => {
         lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
       });
@@ -211,12 +216,15 @@ export default function ChatMessages({
 
       {showScrollButton && (
         <Button
-          onClick={() =>
-            scrollRef.current?.scrollTo({
-              top: scrollRef.current.scrollHeight,
-              behavior: "smooth",
-            })
-          }
+          onClick={() => {
+            setShouldAutoScroll(true);
+            requestAnimationFrame(() => {
+              scrollRef.current?.scrollTo({
+                top: scrollRef.current.scrollHeight,
+                behavior: "smooth",
+              });
+            });
+          }}
           variant="outline"
           size="lg"
           className="absolute bottom-4 left-1/2 -translate-x-1/2 !z-[100] flex items-center justify-center shadow-lg bg-background/50 text-foreground/50 !size-10 m-0 p-0 rounded-full"
@@ -344,9 +352,23 @@ function AssistantMessage({
         <div
           className={cn(
             "group relative mt-2 lg:mt-4 bg-gradient-to-[135deg] from-white/[0.02] to-white/[0.005] backdrop-blur-2xl border border-white/[0.03] shadow-[0_12px_36px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.03)] rounded-2xl p-2 lg:p-3 animate-message-slide-in",
-            message && "cursor-pointer"
+            (message || isGenerating) && "cursor-pointer"
           )}
-          onClick={() => message && onMessageClick(message)}
+          onClick={() => {
+            if (message) {
+              onMessageClick(message);
+            } else if (isGenerating) {
+              // For streaming messages, pass a temporary message object
+              onMessageClick({
+                id: "temp",
+                role: "assistant",
+                content: content,
+                chatId: "",
+                position: 0,
+                createdAt: new Date(),
+              });
+            }
+          }}
         >
           <div className="mb-1.5 flex items-center justify-between gap-2 text-xs font-medium text-primary">
             <div className="flex items-center gap-2">
@@ -355,7 +377,7 @@ function AssistantMessage({
                 {isGenerating ? "در حال نوشتن کد..." : `نسخه ${version}`}
               </span>
             </div>
-            {message && (
+            {(message || isGenerating) && (
               <div className="flex items-center gap-2">
                 <span className="text-foreground/60">
                   برای مشاهده کلیک کنید
@@ -378,7 +400,9 @@ function AssistantMessage({
                   ),
                 }}
               >
-                {`\`\`\`${codePart.language}\n${codePart.content}\n\`\`\``}
+                {codePart
+                  ? `\`\`\`${codePart.language}\n${codePart.content}\n\`\`\``
+                  : ""}
               </Markdown>
             </div>
             <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-background/80 to-transparent pointer-events-none" />
