@@ -330,7 +330,7 @@ export default function Home() {
                 className="group relative overflow-hidden rounded-xl border border-border/40 
                   bg-gradient-to-br from-[#151515] via-[#171717] to-[#151515] p-4 md:p-5 text-right 
                   backdrop-blur-md transition-all duration-500 hover:scale-[1.02] active:scale-95
-                  hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 touch-none
+                  hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 touch-action-pan-y
                   hover:border-primary/20 active:translate-y-0"
                 onClick={() => handleSuggestionClick(prompt.description)}
               >
