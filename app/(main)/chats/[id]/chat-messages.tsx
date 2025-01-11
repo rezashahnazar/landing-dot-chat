@@ -60,23 +60,18 @@ export default function ChatMessages({
     // 1. User is already near bottom (within 100px)
     // 2. Stream just started (streamText.length === 1)
     // 3. shouldAutoScroll is true (set when user was near bottom when stream started)
-    // 4. There is after-code text being streamed
     const parts = splitByFirstCodeFence(streamText);
-    const hasAfterCodeText = parts.some(
-      (part, index) =>
-        index >
-          parts.findIndex(
-            (p) =>
-              p.type === "first-code-fence" ||
-              p.type === "first-code-fence-generating"
-          ) && part.type === "text"
+    const hasCodePart = parts.some(
+      (p) =>
+        p.type === "first-code-fence" ||
+        p.type === "first-code-fence-generating"
     );
 
     if (
-      (distanceFromBottom < 100 ||
-        streamText.length === 1 ||
-        shouldAutoScroll) &&
-      hasAfterCodeText
+      distanceFromBottom < 100 ||
+      streamText.length === 1 ||
+      shouldAutoScroll ||
+      hasCodePart
     ) {
       // Use requestAnimationFrame to ensure DOM is updated
       requestAnimationFrame(() => {
@@ -110,6 +105,7 @@ export default function ChatMessages({
   // Get all text after the code block
   const afterCodeText = parts.reduce((acc, part, index) => {
     if (
+      codePart &&
       index >
         parts.findIndex(
           (p) =>
@@ -155,12 +151,12 @@ export default function ChatMessages({
     <div className="flex-1 overflow-hidden relative w-full h-full">
       <div
         ref={scrollRef}
-        className="mx-auto flex w-full max-w-3xl flex-col pt-4 px-2 lg:px-0 overflow-y-auto overflow-x-hidden h-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        className="mx-auto flex w-full max-w-3xl flex-col pt-4 pb-2 px-2 lg:px-0 overflow-y-auto overflow-x-hidden h-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
       >
         <UserMessage content={chat.prompt} />
 
         {chat.messages.slice(2).map((message) => (
-          <div key={message.id} className="w-full">
+          <div key={message.id} className="w-full px-2">
             {message.role === "user" ? (
               <UserMessage content={message.content} />
             ) : (
@@ -315,6 +311,7 @@ function AssistantMessage({
   // Get all text after the code block
   const afterCodeText = parts.reduce((acc, part, index) => {
     if (
+      codePart &&
       index >
         parts.findIndex(
           (p) =>
@@ -335,7 +332,7 @@ function AssistantMessage({
         isActive && "scale-[1.02]"
       )}
     >
-      {!skipInitialText && textPart && (
+      {!skipInitialText && textPart && !codePart && (
         <div className="bg-gradient-to-[135deg] from-white/[0.02] to-white/[0.005] backdrop-blur-2xl border border-white/[0.03] shadow-[0_12px_36px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.03)] rounded-2xl p-3 lg:p-5 animate-message-slide-in">
           <Markdown
             className="prose prose-neutral prose-p:text-[12px] prose-headings:text-[12px] prose-li:text-[12px] max-w-none text-right text-foreground/90 dark:prose-invert [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 prose-p:leading-relaxed prose-li:leading-relaxed"
@@ -398,7 +395,7 @@ function AssistantMessage({
             </div>
             {(message || isGenerating) && (
               <div className="flex items-center gap-2">
-                <span className="text-foreground/60">
+                <span className="text-foreground/60 text-[10px]">
                   برای مشاهده کلیک کنید
                 </span>
               </div>

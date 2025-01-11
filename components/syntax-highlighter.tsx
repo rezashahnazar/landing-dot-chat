@@ -29,7 +29,7 @@ export default function SyntaxHighlighter({
 
   return (
     <div
-      className="p-4 text-sm whitespace-pre w-full"
+      className="text-sm whitespace-pre w-full overflow-x-auto p-4"
       dir="ltr"
       dangerouslySetInnerHTML={{ __html: codeHtml }}
     />

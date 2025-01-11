@@ -180,7 +180,10 @@ export default function CodeViewer({
         {layout === "tabbed" ? (
           <div className="h-full">
             {activeTab === "code" ? (
-              <div ref={codeScrollRef} className="h-full overflow-auto">
+              <div
+                ref={codeScrollRef}
+                className="h-full overflow-auto bg-neutral-950/70"
+              >
                 <SyntaxHighlighter code={code} language={language} />
               </div>
             ) : (
@@ -213,7 +216,10 @@ export default function CodeViewer({
         ) : (
           <div className="flex h-full flex-col lg:flex-row">
             <div className="h-1/2 lg:h-full lg:w-1/2">
-              <div ref={codeScrollRef} className="h-full overflow-auto">
+              <div
+                ref={codeScrollRef}
+                className="h-full overflow-auto p-4 rounded-xl bg-neutral-950/70"
+              >
                 <SyntaxHighlighter code={code} language={language} />
               </div>
             </div>
