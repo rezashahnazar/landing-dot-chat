@@ -29,6 +29,7 @@
     "@vercel/og": "^0.6.4",
     "ai": "^4.0.29",
     "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "dedent": "^1.5.3",
     "eventsource-parser": "^1.1.2",
     "framer-motion": "^11.16.0",
