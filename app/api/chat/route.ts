@@ -21,19 +21,25 @@ export async function POST(req: Request) {
       temperature: TEMPERATURE,
     });
 
+    const encoder = new TextEncoder();
     const stream = new ReadableStream({
       async start(controller) {
-        for await (const chunk of response.textStream) {
-          controller.enqueue(new TextEncoder().encode(chunk));
+        try {
+          for await (const chunk of response.textStream) {
+            controller.enqueue(encoder.encode(`data: ${chunk}\n\n`));
+          }
+          controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+          controller.close();
+        } catch (error) {
+          controller.error(error);
         }
-        controller.close();
       },
     });
 
     return new Response(stream, {
       headers: {
         "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
+        "Cache-Control": "no-cache, no-transform",
         Connection: "keep-alive",
       },
     });

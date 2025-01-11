@@ -154,7 +154,9 @@ export async function getNextCompletionStreamPromise(
     throw new Error("Failed to get completion stream");
   }
 
-  return response.body;
+  return {
+    streamPromise: Promise.resolve(response.body),
+  };
 }
 
 async function getMessagesForCompletion(
