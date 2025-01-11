@@ -28,24 +28,6 @@ export default function ChatMessages({
   const [shouldAutoScroll, setShouldAutoScroll] = useState(false);
   const lastMessageRef = useRef<HTMLDivElement>(null);
 
-  // Show planning text if we have any text content before code blocks
-  const planningPart = parts.find((part) => part.type === "text");
-  const codePart = parts.find(
-    (part) =>
-      part.type === "first-code-fence" ||
-      part.type === "first-code-fence-generating"
-  );
-  const hasCodePart = !!codePart;
-  const isGeneratingCode = codePart?.type === "first-code-fence-generating";
-
-  // Get all text after the code block
-  const afterCodeText = parts.reduce((acc, part, index) => {
-    if (index > 0 && part.type === "text") {
-      return acc + part.content;
-    }
-    return acc;
-  }, "");
-
   // Auto-scroll when new messages are added
   useEffect(() => {
     const scrollElement = scrollRef.current;
@@ -78,7 +60,9 @@ export default function ChatMessages({
       streamText.length === 1 ||
       shouldAutoScroll
     ) {
-      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+      requestAnimationFrame(() => {
+        lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+      });
     }
   }, [streamText, shouldAutoScroll]);
 
@@ -88,6 +72,32 @@ export default function ChatMessages({
       setShouldAutoScroll(false);
     }
   }, [streamText]);
+
+  // Show planning text if we have any text content before code blocks
+  const planningPart = parts.find((part) => part.type === "text");
+  const codePart = parts.find(
+    (part) =>
+      part.type === "first-code-fence" ||
+      part.type === "first-code-fence-generating"
+  );
+  const hasCodePart = !!codePart;
+  const isGeneratingCode = codePart?.type === "first-code-fence-generating";
+
+  // Get all text after the code block
+  const afterCodeText = parts.reduce((acc, part, index) => {
+    if (
+      index >
+        parts.findIndex(
+          (p) =>
+            p.type === "first-code-fence" ||
+            p.type === "first-code-fence-generating"
+        ) &&
+      part.type === "text"
+    ) {
+      return acc + part.content;
+    }
+    return acc;
+  }, "");
 
   useEffect(() => {
     const scrollElement = scrollRef.current;
@@ -146,7 +156,7 @@ export default function ChatMessages({
         {streamText && (
           <div ref={lastMessageRef} className="w-full">
             {planningPart && (
-              <div className="bg-gradient-to-[135deg] from-white/[0.02] to-white/[0.005] backdrop-blur-2xl border border-white/[0.03] shadow-[0_12px_36px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.03)] rounded-2xl p-3 lg:p-5 my-2 lg:my-4 animate-message-slide-in origin-center hover:-translate-y-0.5 hover:scale-[1.002] hover:shadow-[0_20px_48px_rgba(0,0,0,0.25),inset_0_0_1px_1px_rgba(255,255,255,0.07)]">
+              <div className="bg-gradient-to-[135deg] from-white/[0.02] to-white/[0.005] backdrop-blur-2xl border border-white/[0.03] shadow-[0_12px_36px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.03)] rounded-2xl p-3 lg:p-5 my-2 lg:my-4 animate-message-slide-in">
                 <div className="mb-2 flex items-center gap-2 text-xs font-medium text-primary">
                   <Sparkles className="h-4 w-4" />
                   <span>در حال برنامه‌ریزی...</span>
@@ -194,41 +204,6 @@ export default function ChatMessages({
                 skipInitialText={true}
                 isGenerating={isGeneratingCode}
               />
-            )}
-            {afterCodeText && (
-              <div className="bg-gradient-to-[135deg] from-secondary/20 to-secondary/5 backdrop-blur-2xl border border-white/[0.03] shadow-[0_8px_16px_rgba(0,0,0,0.1)] rounded-2xl p-3 lg:p-4 my-2 animate-message-slide-in">
-                <Markdown
-                  className="prose prose-neutral prose-p:text-[12px] prose-headings:text-[12px] prose-li:text-[12px] max-w-none text-right text-foreground/80 dark:prose-invert [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 prose-p:leading-tight prose-li:leading-tight"
-                  components={{
-                    h1: ({ children }) => (
-                      <h1 className="mt-3 mb-2 font-bold first:mt-0">
-                        {children}
-                      </h1>
-                    ),
-                    h2: ({ children }) => (
-                      <h2 className="mt-2 mb-1 font-semibold">{children}</h2>
-                    ),
-                    p: ({ children }) => (
-                      <p className="mb-2 last:mb-0">{children}</p>
-                    ),
-                    ul: ({ children }) => (
-                      <ul className="mb-2 list-disc pr-5 last:mb-0">
-                        {children}
-                      </ul>
-                    ),
-                    ol: ({ children }) => (
-                      <ol className="mb-2 list-decimal pr-5 last:mb-0">
-                        {children}
-                      </ol>
-                    ),
-                    li: ({ children }) => (
-                      <li className="mb-0.5 last:mb-0">{children}</li>
-                    ),
-                  }}
-                >
-                  {afterCodeText}
-                </Markdown>
-              </div>
             )}
           </div>
         )}
@@ -310,6 +285,22 @@ function AssistantMessage({
       part.type === "first-code-fence-generating"
   );
 
+  // Get all text after the code block
+  const afterCodeText = parts.reduce((acc, part, index) => {
+    if (
+      index >
+        parts.findIndex(
+          (p) =>
+            p.type === "first-code-fence" ||
+            p.type === "first-code-fence-generating"
+        ) &&
+      part.type === "text"
+    ) {
+      return acc + part.content;
+    }
+    return acc;
+  }, "");
+
   return (
     <div
       className={cn(
@@ -352,13 +343,12 @@ function AssistantMessage({
       {codePart && (
         <div
           className={cn(
-            "group relative mt-2 lg:mt-4 bg-gradient-to-[135deg] from-white/[0.02] to-white/[0.005] backdrop-blur-2xl border border-white/[0.03] shadow-[0_12px_36px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.03)] rounded-2xl p-3 lg:p-5 animate-message-slide-in",
-            message &&
-              "cursor-pointer hover:-translate-y-0.5 hover:scale-[1.002] hover:shadow-[0_20px_48px_rgba(0,0,0,0.25),inset_0_0_1px_1px_rgba(255,255,255,0.07)]"
+            "group relative mt-2 lg:mt-4 bg-gradient-to-[135deg] from-white/[0.02] to-white/[0.005] backdrop-blur-2xl border border-white/[0.03] shadow-[0_12px_36px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.03)] rounded-2xl p-2 lg:p-3 animate-message-slide-in",
+            message && "cursor-pointer"
           )}
           onClick={() => message && onMessageClick(message)}
         >
-          <div className="mb-2 flex items-center justify-between gap-2 text-xs font-medium text-primary">
+          <div className="mb-1.5 flex items-center justify-between gap-2 text-xs font-medium text-primary">
             <div className="flex items-center gap-2">
               <Sparkles className="h-4 w-4" />
               <span>
@@ -366,7 +356,7 @@ function AssistantMessage({
               </span>
             </div>
             {message && (
-              <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="flex items-center gap-2">
                 <span className="text-foreground/60">
                   برای مشاهده کلیک کنید
                 </span>
@@ -374,8 +364,7 @@ function AssistantMessage({
             )}
           </div>
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/30 pointer-events-none" />
-            <div className="max-h-[300px] overflow-hidden">
+            <div className="max-h-[80px] overflow-hidden">
               <Markdown
                 className="prose prose-neutral prose-p:text-[12px] prose-headings:text-[12px] prose-li:text-[12px] max-w-none text-right text-foreground/90 dark:prose-invert [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 prose-p:leading-tight prose-li:leading-tight"
                 components={{
@@ -392,7 +381,40 @@ function AssistantMessage({
                 {`\`\`\`${codePart.language}\n${codePart.content}\n\`\`\``}
               </Markdown>
             </div>
+            <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-background/80 to-transparent pointer-events-none" />
           </div>
+        </div>
+      )}
+
+      {afterCodeText && (
+        <div className="bg-gradient-to-[135deg] from-white/[0.02] to-white/[0.005] backdrop-blur-2xl border border-white/[0.03] shadow-[0_12px_36px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.03)] rounded-2xl p-3 lg:p-5 mt-2 lg:mt-4 animate-message-slide-in">
+          <Markdown
+            className="prose prose-neutral prose-p:text-[12px] prose-headings:text-[12px] prose-li:text-[12px] max-w-none text-right text-foreground/90 dark:prose-invert [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 prose-p:leading-tight prose-li:leading-tight"
+            components={{
+              h1: ({ children }) => (
+                <h1 className="mt-3 mb-2 text-[12px] font-bold first:mt-0">
+                  {children}
+                </h1>
+              ),
+              h2: ({ children }) => (
+                <h2 className="mt-2 mb-1 text-[12px] font-semibold">
+                  {children}
+                </h2>
+              ),
+              p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+              ul: ({ children }) => (
+                <ul className="mb-2 list-disc pr-5 last:mb-0">{children}</ul>
+              ),
+              ol: ({ children }) => (
+                <ol className="mb-2 list-decimal pr-5 last:mb-0">{children}</ol>
+              ),
+              li: ({ children }) => (
+                <li className="mb-0.5 last:mb-0">{children}</li>
+              ),
+            }}
+          >
+            {afterCodeText}
+          </Markdown>
         </div>
       )}
     </div>

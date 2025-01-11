@@ -30,6 +30,18 @@ export default function ChatPage({ chat }: { chat: Chat }) {
   const [activeMessage, setActiveMessage] = useState(
     chat.messages.filter((m) => m.role === "assistant").at(-1)
   );
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth < 1024 : false
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const stopStream = () => {
     if (readerRef.current) {
@@ -137,37 +149,38 @@ export default function ChatPage({ chat }: { chat: Chat }) {
       {/* Code & Preview Section - Mobile */}
       <div className="lg:hidden">
         <Drawer.Root
-          open={isShowingCodeViewer}
+          open={isShowingCodeViewer && isMobile}
           onOpenChange={(open: boolean) => {
             if (!open) {
               setActiveMessage(undefined);
               setIsShowingCodeViewer(false);
             }
           }}
-          modal={false}
-          dismissible
-          snapPoints={[0.9, 0.5, 0.1]}
+          modal={true}
+          dismissible={true}
         >
           <Drawer.Portal>
             <Drawer.Overlay className="fixed inset-0 bg-black/40" />
             <Drawer.Content
               aria-describedby={undefined}
-              className="fixed inset-x-0 bottom-0 mt-24 h-[90vh] rounded-t-2xl bg-gradient-to-[165deg] from-white/[0.02] to-white/[0.01] backdrop-blur-2xl border border-white/[0.03] shadow-[0_8px_24px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.04)]"
+              className="fixed inset-x-0 bottom-0 mt-24 h-[90vh] rounded-t-2xl bg-gradient-to-[165deg] from-white/[0.02] to-white/[0.01] backdrop-blur-2xl border border-white/[0.03] shadow-[0_8px_24px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.04)] flex flex-col z-50"
             >
               <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 dark:bg-zinc-700 my-3" />
               <Drawer.Title className="sr-only">مشاهده کد</Drawer.Title>
-              <CodeViewer
-                streamText={streamText}
-                chat={chat}
-                message={activeMessage}
-                onMessageChange={setActiveMessage}
-                activeTab={activeTab}
-                onTabChange={setActiveTab}
-                onClose={() => {
-                  setActiveMessage(undefined);
-                  setIsShowingCodeViewer(false);
-                }}
-              />
+              <div className="flex-1 overflow-hidden">
+                <CodeViewer
+                  streamText={streamText}
+                  chat={chat}
+                  message={activeMessage}
+                  onMessageChange={setActiveMessage}
+                  activeTab={activeTab}
+                  onTabChange={setActiveTab}
+                  onClose={() => {
+                    setActiveMessage(undefined);
+                    setIsShowingCodeViewer(false);
+                  }}
+                />
+              </div>
             </Drawer.Content>
           </Drawer.Portal>
         </Drawer.Root>

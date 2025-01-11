@@ -178,22 +178,19 @@ export default function CodeViewer({
 
       <div className="flex-1 overflow-hidden bg-background/30 backdrop-blur-md">
         {layout === "tabbed" ? (
-          <div className="h-full overflow-auto">
+          <div className="h-full">
             {activeTab === "code" ? (
-              <div
-                ref={codeScrollRef}
-                className="relative h-full overflow-auto"
-              >
+              <div ref={codeScrollRef} className="h-full overflow-auto">
                 <SyntaxHighlighter code={code} language={language} />
               </div>
             ) : (
               <>
                 {language && (
-                  <div className="flex h-full items-center justify-center p-4">
+                  <div className="h-full p-4">
                     {streamAppIsGenerating ? (
                       <PreviewSkeleton />
                     ) : (
-                      <div className="w-full h-full glass-panel rounded-xl overflow-hidden">
+                      <div className="h-full glass-panel rounded-xl overflow-hidden">
                         <CodeRunner
                           language={language}
                           code={code}
@@ -215,11 +212,8 @@ export default function CodeViewer({
           </div>
         ) : (
           <div className="flex h-full flex-col lg:flex-row">
-            <div className="h-1/2 lg:h-full lg:w-1/2 overflow-y-auto">
-              <div
-                ref={codeScrollRef}
-                className="relative h-full overflow-auto"
-              >
+            <div className="h-1/2 lg:h-full lg:w-1/2">
+              <div ref={codeScrollRef} className="h-full overflow-auto">
                 <SyntaxHighlighter code={code} language={language} />
               </div>
             </div>
@@ -227,7 +221,7 @@ export default function CodeViewer({
               <div className="glass-panel border-t lg:border-t-0 lg:border-l px-4 py-3 text-sm font-medium">
                 خروجی
               </div>
-              <div className="flex grow items-center justify-center glass-panel">
+              <div className="flex-1 overflow-auto glass-panel">
                 {streamAppIsGenerating ? (
                   <PreviewSkeleton />
                 ) : (
