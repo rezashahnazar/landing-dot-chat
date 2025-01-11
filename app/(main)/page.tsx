@@ -12,6 +12,8 @@ import { createChat, getNextCompletionStreamPromise } from "./actions";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+import Footer from "@/components/footer";
+
 const MODELS = [
   {
     label: "Claude 3.5 Sonnet",
@@ -223,37 +225,42 @@ export default function Home() {
     setPrompt("");
     setIsTyping(true);
 
-    // Scroll textarea into view smoothly
-    textareaRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-    });
+    // Smooth scroll to the top of the container
+    const containerElement = document.querySelector(".container");
+    if (containerElement) {
+      containerElement.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
 
-    // Animate each character
-    characters.forEach((char, index) => {
-      setTimeout(() => {
-        currentText += char;
-        setPrompt(currentText);
+    // Animate each character after scrolling
+    setTimeout(() => {
+      characters.forEach((char, index) => {
+        setTimeout(() => {
+          currentText += char;
+          setPrompt(currentText);
 
-        // Focus the textarea after the animation starts
-        if (index === 0) {
-          textareaRef.current?.focus();
-        }
+          // Focus the textarea after the animation starts
+          if (index === 0) {
+            textareaRef.current?.focus({ preventScroll: true });
+          }
 
-        // Stop typing animation when done
-        if (index === characters.length - 1) {
-          setTimeout(() => setIsTyping(false), 100);
-        }
-      }, index * typingSpeed);
-    });
+          // Stop typing animation when done
+          if (index === characters.length - 1) {
+            setTimeout(() => setIsTyping(false), 100);
+          }
+        }, index * typingSpeed);
+      });
+    }, 500); // Start typing after scroll animation
   };
 
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-t from-background/90 to-background/95 relative overflow-hidden">
       {/* Ambient background effect - refined for depth */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,rgba(var(--primary-rgb),0.07),transparent_50%)] animate-pulse-slow opacity-70 md:opacity-100 backdrop-blur-3xl" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(var(--primary-rgb),0.05),transparent_50%)] animate-pulse-slower opacity-70 md:opacity-100" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_60%,rgba(var(--primary-rgb),0.03),transparent_40%)] animate-pulse-slow opacity-0 md:opacity-100" />
+      {/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,rgba(var(--primary-rgb),0.07),transparent_50%)] animate-pulse-slow opacity-70 md:opacity-100 backdrop-blur-3xl" /> */}
+      {/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(var(--primary-rgb),0.05),transparent_50%)] animate-pulse-slower opacity-70 md:opacity-100" /> */}
+      {/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_60%,rgba(var(--primary-rgb),0.03),transparent_40%)] animate-pulse-slow opacity-0 md:opacity-100" /> */}
 
       <div className="container relative mx-auto max-w-5xl px-3 py-6 md:px-4 md:py-16 lg:py-24">
         <div className="flex flex-col items-center justify-center space-y-10 md:space-y-16">
@@ -280,7 +287,7 @@ export default function Home() {
 
             <p
               className="max-w-xl text-sm md:text-base text-muted-foreground/80 
-            bg-background/30 backdrop-blur-sm rounded-xl px-4 py-1"
+            bg-background/80 rounded-xl px-4 py-1"
             >
               ایده‌هاتو بنویس و با هوش مصنوعی لندینگ بساز!
             </p>
@@ -332,30 +339,15 @@ export default function Home() {
                 type="button"
                 className="group relative overflow-hidden rounded-xl border border-border/40 
                   bg-gradient-to-br from-[#151515] via-[#171717] to-[#151515] p-4 md:p-5 text-right 
-                  backdrop-blur-md transition-all duration-500 hover:scale-[1.02] active:scale-95
-                  hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 touch-action-pan-y
-                  hover:border-primary/20 active:translate-y-0"
+                  transition-all duration-500 touch-action-pan-y"
                 onClick={() => handleSuggestionClick(prompt.description)}
               >
-                <div
-                  className="absolute inset-0 bg-gradient-to-br from-primary/[0.04] 
-                  to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"
-                />
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.05),transparent_50%)]" />
-                <div
-                  className="absolute inset-0 bg-gradient-to-br from-transparent to-primary/[0.03] 
-                  opacity-0 group-hover:opacity-100 transition-opacity duration-700"
-                />
-                <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100" />
-
                 <div className="relative z-10">
-                  <h3
-                    className="text-sm font-semibold text-foreground/90 mb-2 
-                    group-hover:text-primary/90 transition-colors duration-500"
-                  >
+                  <h3 className="text-sm font-semibold text-foreground/90 mb-2">
                     {prompt.title}
                   </h3>
-                  <p className="text-xs text-muted-foreground/80 line-clamp-2 transition-colors duration-500 group-hover:text-muted-foreground/90 font-light">
+                  <p className="text-xs text-muted-foreground/80 line-clamp-2 font-light">
                     {prompt.description}
                   </p>
                 </div>
@@ -364,6 +356,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

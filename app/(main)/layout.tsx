@@ -1,7 +1,6 @@
 import Providers from "@/app/(main)/providers";
 import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/header";
-import Footer from "@/components/footer";
 
 export default function Layout({
   children,
@@ -16,7 +15,6 @@ export default function Layout({
           <div className="fixed inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(120,119,198,0.05),rgba(255,255,255,0))] pointer-events-none" />
           {children}
         </main>
-        <Footer />
         <Toaster />
       </div>
     </Providers>

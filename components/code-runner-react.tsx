@@ -27,7 +27,7 @@ const ErrorListener = ({ onError }: { onError?: (error: string) => void }) => {
 
   if (sandpack.error) {
     return (
-      <div className="absolute inset-0 flex items-center justify-center bg-destructive/5 backdrop-blur-sm">
+      <div className="absolute inset-0 flex items-center justify-center bg-destructive/5 bg-background/80">
         <div className="flex flex-col gap-4 p-4 text-center max-w-md">
           <h2 className="text-lg font-semibold text-destructive">
             خطا در اجرای کد

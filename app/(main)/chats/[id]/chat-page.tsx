@@ -120,7 +120,7 @@ export default function ChatPage({ chat }: { chat: Chat }) {
   }, [chat.id, router, streamPromise, context]);
 
   return (
-    <div className="fixed inset-0 flex overflow-hidden bg-[radial-gradient(circle_at_70%_30%,hsl(220_20%_12%/0.9)_0%,hsl(var(--background))_100%)] backdrop-blur-2xl before:content-[''] before:fixed before:inset-0 before:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.03)_1px,transparent_1px)] before:bg-[length:clamp(20px,2vw,32px)_clamp(20px,2vw,32px)] before:animate-float-fur before:pointer-events-none before:opacity-80 before:mask-[radial-gradient(circle_at_50%_50%,black,transparent_80%)]">
+    <div className="fixed inset-0 flex overflow-hidden bg-[radial-gradient(ellipse_at_top,rgba(0,0,0,0.4)_0%,hsl(var(--background))_100%)] bg-background/90 before:content-[''] before:fixed before:inset-0 before:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.03)_1px,transparent_1px)] before:bg-[length:clamp(20px,2vw,32px)_clamp(20px,2vw,32px)] before:animate-float-fur before:pointer-events-none before:opacity-80 before:mask-[radial-gradient(circle_at_50%_50%,black,transparent_80%)]">
       {/* Code & Preview Section - Desktop */}
       <div className="hidden lg:block">
         <div
@@ -130,7 +130,7 @@ export default function ChatPage({ chat }: { chat: Chat }) {
           )}
         >
           {isShowingCodeViewer && (
-            <div className="h-full rounded-2xl bg-gradient-to-[165deg] from-white/[0.02] to-white/[0.01] backdrop-blur-2xl border border-white/[0.03] shadow-[0_8px_24px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.04)] animate-scale-in">
+            <div className="h-full rounded-2xl bg-gradient-to-[165deg] from-white/[0.02] to-white/[0.01] bg-background/5 border border-white/[0.03] shadow-[0_8px_24px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.04)] animate-scale-in">
               <CodeViewer
                 streamText={streamText}
                 chat={chat}
@@ -191,7 +191,7 @@ export default function ChatPage({ chat }: { chat: Chat }) {
         )}
       >
         {/* Chat Header */}
-        <div className="flex h-14 shrink-0 items-center border-b px-0 z-10 bg-gradient-to-r from-white/[0.02] to-white/[0.01] backdrop-blur-2xl border-white/[0.03] shadow-[0_4px_24px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.03)] animate-slide-down gap-2">
+        <div className="flex h-14 shrink-0 items-center border-b px-0 z-10 bg-gradient-to-r from-white/[0.02] to-white/[0.01] bg-background/5 border-white/[0.03] shadow-[0_4px_24px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.03)] animate-slide-down gap-2">
           <Link
             href="/"
             className="mr-3 p-2.5 rounded-xl hover:bg-white/10 transition-all duration-300 hover:-translate-x-0.5 active:translate-x-0"

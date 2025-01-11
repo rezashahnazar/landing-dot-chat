@@ -47,7 +47,7 @@ const DialogContent = React.forwardRef<
           "w-full max-w-lg",
           "translate-x-[-50%] translate-y-[-50%]",
           "grid gap-4",
-          "bg-background/95 backdrop-blur-xl backdrop-saturate-150",
+          "bg-background/80",
           "p-6 shadow-[0_8px_32px_-8px] shadow-foreground/20",
           "border border-border/50",
           "duration-300 ease-out",

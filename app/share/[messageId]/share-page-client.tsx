@@ -4,7 +4,6 @@ import CodeRunner from "@/components/code-runner";
 import { extractFirstCodeBlock } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { notFound } from "next/navigation";
-
 export default function SharePageClient({
   message,
 }: {

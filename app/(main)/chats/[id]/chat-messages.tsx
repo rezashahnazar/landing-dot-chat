@@ -176,7 +176,7 @@ export default function ChatMessages({
         {streamText && (
           <div ref={lastMessageRef} className="w-full">
             {planningPart && (
-              <div className="bg-gradient-to-[135deg] from-white/[0.02] to-white/[0.005] backdrop-blur-2xl border border-white/[0.03] shadow-[0_12px_36px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.03)] rounded-2xl p-3 lg:p-5 my-2 lg:my-4 animate-message-slide-in">
+              <div className="bg-gradient-to-[135deg] from-white/[0.02] to-white/[0.005] bg-background/5 border border-white/[0.03] shadow-[0_12px_36px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.03)] rounded-2xl p-3 lg:p-5 my-2 lg:my-4 animate-message-slide-in">
                 <div className="mb-2 flex items-center gap-2 text-xs font-medium text-primary">
                   <Sparkles className="h-4 w-4" />
                   <span>در حال برنامه‌ریزی...</span>
@@ -253,7 +253,7 @@ export default function ChatMessages({
 
 function UserMessage({ content }: { content: string }) {
   return (
-    <div className="bg-gradient-to-[135deg] from-primary/20 to-primary/5 backdrop-blur-2xl border border-white/[0.03] shadow-[0_8px_16px_rgba(0,0,0,0.1)] rounded-2xl p-3 lg:p-4 my-2 animate-message-slide-in">
+    <div className="bg-gradient-to-[135deg] from-primary/20 to-primary/5 bg-background/10 border border-white/[0.03] shadow-[0_8px_16px_rgba(0,0,0,0.1)] rounded-2xl p-3 lg:p-4 my-2 animate-message-slide-in">
       <Markdown
         className="prose prose-neutral prose-p:text-[12px] prose-headings:text-[12px] prose-li:text-[12px] max-w-none text-right text-foreground/90 dark:prose-invert [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 prose-p:leading-relaxed prose-li:leading-relaxed"
         components={{
@@ -333,7 +333,7 @@ function AssistantMessage({
       )}
     >
       {!skipInitialText && textPart && !codePart && (
-        <div className="bg-gradient-to-[135deg] from-white/[0.02] to-white/[0.005] backdrop-blur-2xl border border-white/[0.03] shadow-[0_12px_36px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.03)] rounded-2xl p-3 lg:p-5 animate-message-slide-in">
+        <div className="bg-gradient-to-[135deg] from-white/[0.02] to-white/[0.005] bg-background/5 border border-white/[0.03] shadow-[0_12px_36px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.03)] rounded-2xl p-3 lg:p-5 animate-message-slide-in">
           <Markdown
             className="prose prose-neutral prose-p:text-[12px] prose-headings:text-[12px] prose-li:text-[12px] max-w-none text-right text-foreground/90 dark:prose-invert [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 prose-p:leading-relaxed prose-li:leading-relaxed"
             components={{
@@ -367,7 +367,7 @@ function AssistantMessage({
       {codePart && (
         <div
           className={cn(
-            "group relative mt-2 lg:mt-4 bg-gradient-to-[135deg] from-white/[0.02] to-white/[0.005] backdrop-blur-2xl border border-white/[0.03] shadow-[0_12px_36px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.03)] rounded-2xl p-2 lg:p-3 animate-message-slide-in",
+            "group relative mt-2 lg:mt-4 bg-gradient-to-[135deg] from-white/[0.02] to-white/[0.005] bg-background/5 border border-white/[0.03] shadow-[0_12px_36px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.03)] rounded-2xl p-2 lg:p-3 animate-message-slide-in",
             (message || isGenerating) && "cursor-pointer"
           )}
           onClick={() => {
@@ -427,7 +427,7 @@ function AssistantMessage({
       )}
 
       {afterCodeText && (
-        <div className="bg-gradient-to-[135deg] from-white/[0.02] to-white/[0.005] backdrop-blur-2xl border border-white/[0.03] shadow-[0_12px_36px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.03)] rounded-2xl p-3 lg:p-5 mt-2 lg:mt-4 animate-message-slide-in">
+        <div className="bg-gradient-to-[135deg] from-white/[0.02] to-white/[0.005] bg-background/5 border border-white/[0.03] shadow-[0_12px_36px_rgba(0,0,0,0.2),inset_0_0_1px_1px_rgba(255,255,255,0.03)] rounded-2xl p-3 lg:p-5 mt-2 lg:mt-4 animate-message-slide-in">
           <Markdown
             className="prose prose-neutral prose-p:text-[12px] prose-headings:text-[12px] prose-li:text-[12px] max-w-none text-right text-foreground/90 dark:prose-invert [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 prose-p:leading-relaxed prose-li:leading-relaxed"
             components={{

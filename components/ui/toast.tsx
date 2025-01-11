@@ -32,7 +32,7 @@ const toastVariants = cva(
     "group pointer-events-auto relative flex w-full items-center justify-between space-x-2",
     "overflow-hidden rounded-lg",
     "border border-border/40",
-    "bg-gradient-to-b from-background/98 via-background/95 to-background/98",
+    "bg-gradient-to-b from-background/95 via-background/95 to-background/98",
     "backdrop-blur-xl backdrop-saturate-150",
     "p-4 pr-7",
     "shadow-[0_8px_24px_-8px] shadow-foreground/20",

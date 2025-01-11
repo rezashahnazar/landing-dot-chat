@@ -34,7 +34,7 @@ const buttonVariants = cva(
           "active:bg-gradient-to-b active:from-destructive/95 active:to-destructive/90",
         ].join(" "),
         outline: [
-          "border border-input bg-background/80 backdrop-blur-[4px]",
+          "border border-input bg-background/90",
           "shadow-[0_2px_8px_-2px] shadow-foreground/5",
           "hover:shadow-[0_4px_16px_-4px] hover:shadow-foreground/10",
           "hover:bg-accent/50 hover:text-accent-foreground",
