@@ -11,6 +11,13 @@ export const metadata: Metadata = {
   metadataBase: new URL(url),
   title,
   description,
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png" }],
+  },
 };
 
 export default function RootLayout({

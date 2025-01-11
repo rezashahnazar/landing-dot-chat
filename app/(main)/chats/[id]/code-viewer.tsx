@@ -97,32 +97,32 @@ export default function CodeViewer({
 
   // Auto-scroll when code is being generated or content changes
   useEffect(() => {
+    const scrollElement = codeScrollRef.current;
+    if (!scrollElement) return;
+
     const scrollToBottom = () => {
-      if (codeScrollRef.current) {
-        codeScrollRef.current.style.scrollBehavior = "smooth";
-        const scrollHeight = codeScrollRef.current.scrollHeight;
-        const clientHeight = codeScrollRef.current.clientHeight;
-        const currentScroll = codeScrollRef.current.scrollTop;
+      if (scrollElement) {
+        scrollElement.style.scrollBehavior = "smooth";
+        const scrollHeight = scrollElement.scrollHeight;
+        const clientHeight = scrollElement.clientHeight;
+        const currentScroll = scrollElement.scrollTop;
 
         // Only auto-scroll if we're already near the bottom or if code is being generated
         const isNearBottom =
           scrollHeight - (currentScroll + clientHeight) < 100;
         if (streamAppIsGenerating || isNearBottom) {
-          codeScrollRef.current.scrollTop = scrollHeight;
+          scrollElement.scrollTop = scrollHeight;
         }
       }
     };
 
-    // Immediate scroll
-    scrollToBottom();
-
-    // Delayed scroll to ensure content is rendered
+    scrollElement.style.scrollBehavior = "smooth";
     const timeoutId = setTimeout(scrollToBottom, 100);
 
     return () => {
       clearTimeout(timeoutId);
-      if (codeScrollRef.current) {
-        codeScrollRef.current.style.scrollBehavior = "auto";
+      if (scrollElement) {
+        scrollElement.style.scrollBehavior = "auto";
       }
     };
   }, [streamAppIsGenerating, code]); // Trigger on both streaming state and code changes

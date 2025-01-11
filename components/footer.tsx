@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -12,10 +13,13 @@ export default function Footer() {
           href="https://trustseal.enamad.ir/?id=567125&Code=rykQqrC625bllzUtpShdgYpNrXhmLIrF"
           className="rounded-lg border border-gray-600 p-2 size-[100px] flex items-center justify-center"
         >
-          <img
+          <Image
+            unoptimized
             referrerPolicy="origin"
             src="https://trustseal.enamad.ir/logo.aspx?id=567125&Code=rykQqrC625bllzUtpShdgYpNrXhmLIrF"
             alt="Enamad Trust Seal"
+            width={80}
+            height={80}
             style={{ cursor: "pointer" }}
             code="rykQqrC625bllzUtpShdgYpNrXhmLIrF"
             {...({} as any)}

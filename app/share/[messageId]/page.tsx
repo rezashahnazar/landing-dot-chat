@@ -7,9 +7,9 @@ import SharePageClient from "./share-page-client";
 export async function generateMetadata({
   params,
 }: {
-  params: { messageId: string };
+  params: Promise<{ messageId: string }>;
 }): Promise<Metadata> {
-  const { messageId } = params;
+  const { messageId } = await params;
   const message = await getMessage(messageId);
   if (!message) {
     notFound();
@@ -44,17 +44,20 @@ const getMessage = cache(async (messageId: string) => {
   });
 });
 
-export default async function SharePage({
-  params,
-}: {
-  params: { messageId: string };
-}) {
-  const { messageId } = params;
+type Props = {
+  params: Promise<{ messageId: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
-  const message = await client.message.findUnique({ where: { id: messageId } });
+export default async function SharePage(props: Props) {
+  const { messageId } = await props.params;
+
+  const message = await getMessage(messageId);
   if (!message) {
     notFound();
   }
 
   return <SharePageClient message={message} />;
 }
+
+export const maxDuration = 45;
