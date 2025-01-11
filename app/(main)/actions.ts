@@ -136,14 +136,25 @@ export async function createMessage(
 }
 
 // Stream Generation
-export const runtime = "edge";
-
 export async function getNextCompletionStreamPromise(
   messageId: string,
   model: string
 ) {
   const messages = await getMessagesForCompletion(messageId);
-  return createCompletionStream(model, messages);
+
+  const response = await fetch("/api/chat", {
+    method: "POST",
+    body: JSON.stringify({ messages, model }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to get completion stream");
+  }
+
+  return response.body;
 }
 
 async function getMessagesForCompletion(
@@ -165,19 +176,6 @@ async function getMessagesForCompletion(
       })
     )
     .parse(messagesRes);
-}
-
-async function createCompletionStream(model: string, messages: ChatMessage[]) {
-  const openrouter = createOpenRouter({
-    apiKey: process.env.OPENROUTER_API_KEY!,
-    baseUrl: "https://openrouter.ai/api/v1",
-  });
-
-  return streamText({
-    model: openrouter(model),
-    messages,
-    temperature: TEMPERATURE,
-  });
 }
 
 // Helper Functions
